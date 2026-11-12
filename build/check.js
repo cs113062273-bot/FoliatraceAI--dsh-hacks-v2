@@ -184,6 +184,11 @@ function gapHTML(g) {
 }
 
 function briefHTML(r, opts = {meds: true, conditions: true, ingredients: true}, forPrint = false, qr = '') {
+  // Recompute the export with only the selected personal inputs. Hiding just the
+  // list would still disclose excluded medicine names in cards and questions.
+  if (forPrint && (!opts.meds || !opts.conditions)) r = analyze({products: state.products,
+    medicines: opts.meds ? state.medicines : [], conditions: opts.conditions ? state.conditions : [],
+    aiMedicines: opts.meds ? state.aiMeds : {}}, idx);
   const main = r.findings.filter(f => f.level !== 'note'), notes = r.findings.filter(f => f.level === 'note');
   const ident = r.gaps.filter(g => g.type === 'identity'), other = r.gaps.filter(g => g.type !== 'identity');
   let h = '';
@@ -191,7 +196,7 @@ function briefHTML(r, opts = {meds: true, conditions: true, ingredients: true}, 
     // qr is an SVG generated locally from our own base64url link; it contains no user-supplied markup.
     h += `<header class="print-head">${qr ? `<div class="print-qr">${qr}<span>Scan to open this brief with live NIH links</span></div>` : ''}<h1>Pharmacist brief</h1><p>Prepared ${esc(new Date().toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'}))} with FoliaTrace · ${r.counts.discuss} to discuss · ${r.counts.caution} cautions · ${r.gaps.length} label questions · for discussion with a pharmacist or clinician · not medical advice</p></header>`;
     if (opts.meds) h += `<p><strong>Medicines I take:</strong> ${r.medicines.length ? r.medicines.map(m => esc(m.input) + (m.inferred ? ` (AI: ${esc(m.name)}, to confirm)` : m.known && m.corrected ? ` (read as ${esc(m.name)})` : '')).join(', ') : 'none entered'}</p>`;
-    if (state.reason) h += `<p><strong>I take the supplements for:</strong> ${esc(state.reason)}</p>`;
+    if (opts.conditions && state.reason) h += `<p><strong>I take the supplements for:</strong> ${esc(state.reason)}</p>`;
     if (opts.conditions && r.conditions.length) h += `<p><strong>About me:</strong> ${r.conditions.map(c => esc(kb.conditions[c])).join('; ')}</p>`;
     h += '<h2>Products</h2>' + state.products.map(p => `<div class="print-product"><strong>${esc(p.name)}</strong>${p.brand ? ' · ' + esc(p.brand) : ''}${p.source === 'dsld' ? ` · NIH DSLD label #${esc(p.dsldId)}` : p.fictional ? ' · fictional example' : p.source === 'ocr' ? ' · text read from photo' : ''}${opts.ingredients ? `<p class="small">${p.ingredients.filter(x => !x.other).map(x => esc(x.text.split(' · ')[0])).join('; ')}</p>` : ''}</div>`).join('');
   }
@@ -203,7 +208,7 @@ function briefHTML(r, opts = {meds: true, conditions: true, ingredients: true}, 
   if (ident.length || other.length) {
     h += `<section class="brief-sec"><h3>What the label doesn’t settle</h3>${ident.map(gapHTML).join('')}${other.length ? `<ul class="gap-list">${other.map(gapHTML).join('')}</ul>` : ''}</section>`;
   }
-  h += forPrint ? researchPrintHTML() : '<section class="brief-sec ai-sec" id="ai-research" aria-live="polite"></section>';
+  h += forPrint ? researchPrintHTML(opts.conditions) : '<section class="brief-sec ai-sec" id="ai-research" aria-live="polite"></section>';
   if (notes.length) h += `<section class="brief-sec"><h3>Label &amp; product quality notes</h3><div class="findings">${notes.map(f => findingHTML(f, true)).join('')}</div></section>`;
   const rows = r.checked.map(c => `<tr><th scope="row">${esc(c.ingredient.split(' · ')[0])}${c.amount ? `<span class="small"> · ${esc(c.amount)}</span>` : ''}<br><span class="small">${esc(c.productName)}</span></th><td><a href="${esc(c.source.url)}" target="_blank" rel="noopener noreferrer">${esc(c.herbName)}</a>${c.basis === 'label_species' ? `<br><span class="pill">label states <i>${esc(c.species)}</i></span>` : ''}${c.basis === 'fuzzy' ? `<br><span class="pill">read from photo as “${esc(c.read)}”</span>` : ''}${c.identity_note ? `<br><span class="small">${esc(c.identity_note)}</span>` : ''}</td><td>${c.flagged ? 'See above' : 'Nothing for you'}${forPrint ? '' : `<br><button type="button" class="link research" data-herb="${esc(c.herbName)}">Research this herb →</button>`}</td></tr>`).join('');
   const others = (r.unmatched || []).map(u => esc(u.ingredient.split(' · ')[0]));
@@ -223,7 +228,7 @@ function summaryHTML(r) {
 // ------------------------------------------------ AI research leads in the brief
 let leads = [], leadsToken = 0, checkToken = 0;
 function invalidateBrief() {
-  ++checkToken; ++leadsToken; leads = []; result = null;
+  ++checkToken; ++leadsToken; ++downloadSeq; leads = []; result = null;
   $('#brief').hidden = true; delete $('#brief').dataset.leads;
   $('#handoff').hidden = true;
   $('#run-check').textContent = 'Build my brief →';
@@ -232,10 +237,10 @@ function invalidateBrief() {
 }
 const LEAD_MIN = 2.0; // raw cross-encoder logit, calibrated on demo development queries; not a probability
 const coreName = n => n.replace(/\s*\/.*$/, '').replace(/\s+(oil|extract|root)$/i, '').trim();
-function researchPrintHTML() {
+function researchPrintHTML(includePurpose = true) {
   const shown = leads.filter(l => l.rows.length);
   if (!shown.length) return '';
-  return `<section class="brief-sec"><h3>Research leads, ranked by on-device AI</h3>${shown.map(l => `<p><strong>${esc(l.herb)}</strong>${l.query ? ` · ${esc(state.reason)}` : ''}</p><ul>${l.rows.map(r => `<li><a href="${esc(r.url)}">${esc(r.title.replace(/<[^>]*>/g, ''))}</a></li>`).join('')}</ul>`).join('')}<p class="small">Reading leads for the pharmacist, not a verdict on benefit or safety.</p></section>`;
+  return `<section class="brief-sec"><h3>Research leads, ranked by on-device AI</h3>${shown.map(l => `<p><strong>${esc(l.herb)}</strong>${includePurpose && l.query ? ` · ${esc(state.reason)}` : ''}</p><ul>${l.rows.map(r => `<li><a href="${esc(r.url)}">${esc(r.title.replace(/<[^>]*>/g, ''))}</a></li>`).join('')}</ul>`).join('')}<p class="small">Reading leads for the pharmacist, not a verdict on benefit or safety.</p></section>`;
 }
 function leadHTML(row, lead) {
   const bottle = (result?.checked || []).filter(c => c.herb === lead.herbId).map(c => `${c.ingredient}${c.amount ? ' · ' + c.amount : ''} (${c.productName})`).join('; ');
@@ -272,15 +277,17 @@ async function runResearch(r) {
     l.pending = false;
     renderLeads(`AI is ranking on this device… ${leads.filter(x => !x.pending).length} of ${leads.length} herbs done`);
   }
-  renderLeads(`${leads.some(l => l.error) ? 'Research incomplete' : 'Ranked'} on this device in ${((performance.now() - t0) / 1000).toFixed(1)} s. Reading leads for the pharmacist. Study populations and preparations may differ from your bottle.`);
   $('#brief').dataset.leads = leads.reduce((n, l) => n + l.rows.length, 0);
   $('#brief').dataset.research = JSON.stringify(leads.map(l => ({herb: l.herb, all: l.all, shown: l.rows.map(r => ({id: r.id, score: r.score, goal: r.goal}))})));
-  updateDownload();
+  await updateDownload();
+  if (token !== leadsToken) return;
+  renderLeads(`${leads.some(l => l.error) ? 'Research incomplete' : 'Ranked'} on this device in ${((performance.now() - t0) / 1000).toFixed(1)} s. Reading leads for the pharmacist. Study populations and preparations may differ from your bottle.`);
 }
 
 async function runCheck(scroll = true) {
   if (!state.products.length) return;
-  const token = ++checkToken; ++leadsToken; leads = [];
+  const token = ++checkToken; ++leadsToken; ++downloadSeq; leads = [];
+  $('#handoff').hidden = true;
   $('#run-check').disabled = true; $('#run-check').textContent = 'Understanding your medicines…';
   understandMedicines(); await aiPending;
   if (token !== checkToken || !state.products.length) return;
@@ -307,12 +314,12 @@ async function printQr() { const o = shareOpts(); if (!(o.meds && o.conditions &
 let downloadSeq = 0;
 async function updateDownload() {
   if (!result) return;
+  $('#download-brief').removeAttribute('href');
   const seq = ++downloadSeq; const opts = shareOpts(); const qr = await printQr();
-  if (seq !== downloadSeq) return;
+  if (seq !== downloadSeq || !result) return;
   if (downloadUrl) URL.revokeObjectURL(downloadUrl);
   downloadUrl = URL.createObjectURL(new Blob([standalone(briefHTML(result, opts, true, qr))], {type: 'text/html;charset=utf-8'}));
   $('#download-brief').href = downloadUrl;
-  $('#handoff').hidden = true;
 }
 const PRINT_CSS = `.print-qr{float:right;width:132px;text-align:center;font:11px/1.3 system-ui;color:#46574e;margin:0 0 8px 16px}.print-qr svg{width:132px;height:132px;display:block}`
  + `body{font:12.5px/1.42 Georgia,serif;color:#1d2f27;max-width:780px;margin:18px auto;padding:0 18px}h1{font-size:24px;margin:0}h2{font-size:15px;border-bottom:1px solid #999;margin:12px 0 4px}h3{font-size:14.5px;margin:12px 0 4px}h4{font-size:13.5px;margin:2px 0}p{margin:3px 0}.small,.print-head p{font-size:11px;color:#46574e}.finding,.gap{border:1px solid #bbb;border-left:4px solid #888;border-radius:4px;padding:5px 10px;margin:5px 0;break-inside:avoid}.finding.discuss{border-left-color:#a8432f}.finding.caution{border-left-color:#b17d1a}.finding header p{margin:0}.tag{font:700 9.5px/1 system-ui;letter-spacing:.08em;text-transform:uppercase}blockquote{margin:3px 0;padding:1px 8px;border-left:2px solid #ccc;font-style:italic}.nih-item{display:block;font-style:normal;font-size:11px}.nih-source{margin:0}.ask{background:#f3f1e8;padding:3px 8px;border-radius:3px;margin-top:3px}table{border-collapse:collapse;width:100%;font-size:11px}th,td{border-top:1px solid #ccc;padding:3px 5px;text-align:left;vertical-align:top}.pill{font-size:10px;border:1px solid #999;border-radius:3px;padding:0 3px}ul{padding-left:18px;margin:4px 0}li{margin:2px 0}.candidates>li{border-top:1px dashed #ccc;padding:3px 0}.if-finding{border-left:2px solid #b17d1a;padding-left:8px}a{color:#24543e}.foot{margin-top:12px;border-top:1px solid #999;padding-top:6px;font-size:10.5px}.print-product p{margin:0 0 4px}button{display:none}`;
@@ -461,7 +468,7 @@ async function boot() {
   $('#reason-input').oninput = e => { invalidateBrief(); state.reason = e.target.value.trim().slice(0, 120); state.example = null; save(); renderAll(); };
   $('#run-check').onclick = () => runCheck(true);
   $('#clear-all').onclick = () => { invalidateBrief(); state.products = []; state.medicines = []; state.conditions = []; state.example = null; state.aiMeds = {}; state.reason = ''; $('#reason-input').value = ''; try { localStorage.removeItem(STORE); } catch {} renderAll(); };
-  for (const id of ['share-meds', 'share-conditions', 'share-ingredients']) $('#' + id).onchange = updateDownload;
+  for (const id of ['share-meds', 'share-conditions', 'share-ingredients']) $('#' + id).onchange = () => { $('#handoff').hidden = true; updateDownload(); };
   $('#print-brief').onclick = async () => { $('#print-root').innerHTML = briefHTML(result, shareOpts(), true, await printQr()); window.print(); };
   $('#show-handoff').onclick = showHandoff;
   $('#copy-link').onclick = async () => { try { await navigator.clipboard.writeText($('#handoff-link').value); $('#copy-link').textContent = 'Copied ✓'; } catch { $('#handoff-link').select(); } setTimeout(() => { $('#copy-link').textContent = 'Copy link'; }, 2500); };
