@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; connect-src 'self' blob: data: https://api.ods.od.nih.gov; img-src 'self' data: blob:; style-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="referrer" content="no-referrer"><meta name="description" content="Read a supplement label, see what NIH says about its herbs alongside your medicines, and bring your pharmacist a one-page brief. Every warning is a verbatim, linked NIH sentence. Runs in your browser."><title>FoliaTrace · Bring the bottle. Start a better conversation.</title><link rel="stylesheet" href="demo.css"><script type="module" src="check.js"></script><script type="module" src="demo.js"></script><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='30'%3E🌿%3C/text%3E%3C/svg%3E"></head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><a class="brand" href="./" aria-label="FoliaTrace home"><span aria-hidden="true">f.</span> FoliaTrace</a><nav aria-label="Main"><a href="#check">Check a bottle</a><a href="#evidence">For pharmacists</a><a href="#live-search">Ask the research</a><a href="#how">How it works</a><a href="source.zip" download>Full app <span aria-hidden="true">↗</span></a></nav></header>
+<main id="main"><noscript><p class="scope">FoliaTrace runs in your browser. Please enable JavaScript.</p></noscript>
+
+<section class="hero" aria-labelledby="hero-title">
+ <div>
+  <p class="eyebrow">For people who take supplements, and the pharmacist who checks them</p>
+  <h1 id="hero-title">Bring the bottle.<br><em>Start a better conversation.</em></h1>
+  <p class="lead">Read a supplement label, see what the U.S. National Institutes of Health says about its herbs alongside <strong>your</strong> medicines, and walk into the pharmacy with a printable brief and a QR code your pharmacist can scan. Every warning is a verbatim, linked NIH sentence.</p>
+  <div class="actions"><a class="button" href="#check">Check a bottle <span aria-hidden="true">→</span></a><span class="small">No account · Runs in your browser · Free</span></div>
+  <div class="stats">
+   <p><strong>57.6%</strong><span>of U.S. adults aged 20+ used a dietary supplement in the past 30 days.</span><a href="https://www.cdc.gov/nchs/products/databriefs/db399.htm" target="_blank" rel="noopener noreferrer">CDC NCHS Data Brief 399, 2017–2018</a></p>
+   <p><strong>1 in 3</strong><span>herb and supplement users told a conventional health care provider about it.</span><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2787410/" target="_blank" rel="noopener noreferrer">Mehta et al. 2008, NHIS 2002 data</a></p>
+  </div>
+ </div>
+ <aside class="people" aria-labelledby="people-title">
+  <h2 id="people-title" class="people-title">Start with a person</h2>
+  <p class="small">Fictional people, fictional labels, real NIH statements. One tap runs the full check.</p>
+  <div id="example-list" class="example-list"></div>
+ </aside>
+</section>
+
+<section id="check" class="section check-section" aria-labelledby="check-title">
+ <div class="section-head"><div><p class="eyebrow">01 · Check a bottle</p><h2 id="check-title">What’s in the bottle?<br><em>What else do you take?</em></h2></div><span class="badge">Stays in this browser</span></div>
+ <div class="checker">
+  <div class="step card" aria-labelledby="step1-title">
+   <p class="step-n">1</p><h3 id="step1-title">The bottle</h3>
+   <div class="tabs" role="tablist" aria-label="How to add a product">
+    <button type="button" role="tab" id="tab-search" aria-selected="true" aria-controls="pane-search">Search NIH labels</button>
+    <button type="button" role="tab" id="tab-text" aria-selected="false" aria-controls="pane-text" tabindex="-1">Type or paste</button>
+    <button type="button" role="tab" id="tab-photo" aria-selected="false" aria-controls="pane-photo" tabindex="-1">Photo of label</button>
+   </div>
+   <div id="pane-search" role="tabpanel" aria-labelledby="tab-search">
+    <form id="dsld-form" class="inline-form"><label for="dsld-q">Product or brand name</label><div class="row"><input id="dsld-q" name="q" minlength="2" maxlength="120" placeholder="e.g. ginkgo, turmeric, St. John's wort" autocomplete="off"><button type="submit" disabled>Search</button></div></form>
+    <p class="small">Searches the NIH Dietary Supplement Label Database (≈200,000 U.S. labels). Only your search words are sent to NIH.</p>
+    <p id="dsld-status" role="status" class="small"></p>
+    <ul id="dsld-results" class="dsld-results"></ul>
+   </div>
+   <div id="pane-text" role="tabpanel" aria-labelledby="tab-text" hidden>
+    <form id="text-form"><label>Product name<input name="name" maxlength="120" placeholder="e.g. Joint support capsules" autocomplete="off"></label><label>Ingredients as printed on the label<textarea name="text" rows="6" maxlength="6000" placeholder="Copy the Supplement Facts panel, one ingredient per line.&#10;e.g. Ginkgo biloba leaf extract 120 mg"></textarea></label><button type="submit" disabled>Add this product</button></form>
+   </div>
+   <div id="pane-photo" role="tabpanel" aria-labelledby="tab-photo" hidden>
+    <label class="photo-drop" for="photo-input"><span class="photo-icon" aria-hidden="true">◎</span><strong>Take or choose a photo of the Supplement Facts panel</strong><span class="small">Text recognition runs on this device (≈7 MB, first use only). The photo is never uploaded.</span></label>
+    <input id="photo-input" type="file" accept="image/*" capture="environment" class="visually-hidden">
+    <p id="ocr-status" role="status" aria-live="polite" class="small"></p>
+    <div id="ocr-review" hidden><img id="ocr-preview" alt="Your label photo"><p class="small">Check what we read. Fix anything that looks wrong, then add it.</p></div>
+   </div>
+   <div id="product-list" class="product-list" aria-live="polite"></div>
+  </div>
+
+  <div class="step card" aria-labelledby="step2-title">
+   <p class="step-n">2</p><h3 id="step2-title">Your medicines</h3>
+   <form id="med-form" class="inline-form"><label for="med-input">Prescription or regular medicines</label><div class="row"><input id="med-input" list="med-names" maxlength="80" placeholder="e.g. warfarin, Zoloft, the pill" autocomplete="off"><button type="submit" class="quiet" disabled>Add</button></div><datalist id="med-names"></datalist></form>
+   <ul id="med-list" class="chips" aria-live="polite"></ul>
+   <p class="small">Brand names, doses and small typos are fine. Anything we don’t recognise stays on your brief for the pharmacist.</p>
+   <fieldset class="conditions"><legend>About you <span class="small">(optional)</span></legend><div id="condition-list"></div></fieldset>
+  </div>
+
+  <div class="step card go-card" aria-labelledby="step3-title">
+   <p class="step-n">3</p><h3 id="step3-title">Your pharmacist brief</h3>
+   <p>FoliaTrace matches each ingredient to NIH fact sheets, then to your medicines and situation. You get the exact sentences, the questions to ask, and what the label leaves unclear.</p>
+   <button id="run-check" type="button" class="big" disabled>Build my brief <span aria-hidden="true">→</span></button>
+   <p id="run-hint" class="small">Add at least one product.</p>
+   <p class="small privacy">Your entries are kept only in this browser. <button id="clear-all" type="button" class="link">Erase everything</button></p>
+  </div>
+ </div>
+
+ <article id="brief" class="brief" tabindex="-1" hidden aria-labelledby="brief-title">
+  <header class="brief-head"><div><p class="eyebrow">Your pharmacist brief</p><h2 id="brief-title">Bring this to the pharmacy.</h2></div><div class="brief-actions"><button id="show-handoff" type="button">Hand to pharmacist (QR)</button><button id="print-brief" type="button" class="quiet">Print or save as PDF</button><a id="download-brief" class="button quiet" download="foliatrace-pharmacist-brief.html">Download</a><button id="copy-questions" type="button" class="quiet">Copy my questions</button></div></header>
+  <p id="shared-banner" class="shared-banner" hidden>Opened from a shared brief. Everything you see was carried inside the link; nothing was uploaded. <button id="keep-shared" type="button" class="link">Edit or keep it on this device</button></p>
+  <div id="handoff" class="handoff" hidden><div id="handoff-qr" class="handoff-qr"></div><div><h3>Show this to your pharmacist</h3><p>They scan it and open this same brief, with every NIH link, on their own screen. No account and no upload: the brief is stored inside the link. Anyone who has the link can read it.</p><label for="handoff-link">Link</label><div class="row"><input id="handoff-link" readonly><button id="copy-link" type="button" class="quiet">Copy link</button></div><p id="handoff-size" class="small"></p></div></div>
+  <div id="brief-summary" class="summary" role="status"></div>
+  <div id="brief-body"></div>
+  <fieldset class="share-choice"><legend>On the printed or downloaded brief</legend><label class="check"><input type="checkbox" id="share-meds" checked>My medicines</label><label class="check"><input type="checkbox" id="share-conditions" checked>My health situation</label><label class="check"><input type="checkbox" id="share-ingredients" checked>Full ingredient lists</label></fieldset>
+  <p class="small brief-foot" id="brief-foot"></p>
+ </article>
+</section>
+
+<section id="evidence" class="section evidence-section" aria-labelledby="evidence-title"><div class="section-head"><div><p class="eyebrow">02 · For the pharmacist</p><h2 id="evidence-title">A relevant paper.<br><em>But relevant to this bottle?</em></h2><p>A study of peppermint oil does not describe “mint capsules”. The complete FoliaTrace app compares each study with the exact product across seven dimensions and keeps every unknown visible.</p></div><span class="badge">Recorded from the full app</span></div><p class="recording-note">These five examples were computed by the full FoliaTrace app and are replayed here. Choosing one reads saved results; it does not run a new search.</p><div id="case-tabs" class="case-tabs" role="group" aria-label="Choose a recorded example"></div><p id="case-status" role="status">Loading source-backed examples…</p><div id="case-detail"></div></section>
+
+<section id="live-search" class="section" aria-labelledby="live-title"><div class="section-head"><div><p class="eyebrow">03 · Ask the research</p><h2 id="live-title">Your question.<br><em>AI on your device.</em></h2><p>A neural reranker runs in your browser over 415 redistributable abstracts. No account, no API key, no server.</p></div><span class="badge">Live on-device inference</span></div><form id="live-form" class="card"><label>Research question or terms <span class="small">(3–500 characters)</span><input name="query" required minlength="3" maxlength="500" value="peppermint oil abdominal pain in irritable bowel syndrome" autocomplete="off"></label><div class="actions"><button type="submit" disabled name="method" value="ai">Search with on-device AI</button><button type="submit" disabled name="method" value="bm25" class="quiet">Compare keyword search</button></div><p class="small">First use downloads about 39 MB of model and runtime. Your question stays on this device. The model re-orders the top 20 keyword candidates by relevance; it does not judge benefit or safety.</p></form><p id="live-status" role="status" aria-live="polite"></p><div id="live-results" tabindex="-1" hidden></div></section>
+
+<section id="how" class="section methods" aria-labelledby="methods-title"><p class="eyebrow">04 · How it works</p><h2 id="methods-title">Trust you can check.<br><em>Limits you can see.</em></h2>
+ <div class="three">
+  <article class="card"><span class="number">01</span><h3>Verbatim NIH, verified by code.</h3><p>Every warning is a sentence from an NCCIH “Usefulness and Safety” fact sheet. A build script downloads each page and refuses to publish any quote that is not found word-for-word. <span id="kb-stats"></span></p></article>
+  <article class="card"><span class="number">02</span><h3>A name stays a hypothesis.</h3><p>“Ginseng” can be Asian, American or “Siberian” — different plants. FoliaTrace never guesses: it shows each candidate and which NIH statements would apply, until the label or pharmacist settles it.</p></article>
+  <article class="card"><span class="number">03</span><h3>Your health data stays with you.</h3><p>Medicines, conditions and label photos are processed in this browser. Text recognition and the research AI run on your device. Only label-search words go to NIH.</p></article>
+ </div>
+ <div class="measured card"><h3>Measured on real NIH-listed labels</h3><div class="measure-grid"><p><strong>92%</strong><span>of graded botanical ingredients matched the NIH curator’s declared species from the name alone (787 labels, development sample)</span></p><p><strong>99.7%</strong><span>matched at genus level or better; the one “wrong genus” was a curator typo</span></p><p><strong>50%</strong><span>of botanical ingredients in those labels had no individual amount — hidden in proprietary blends</span></p></div><p class="small">Search-ranked samples from the NIH Dietary Supplement Label Database, not a random market sample. Method and per-herb results ship with the source (<code>reports/label_matching_*.json</code>).</p></div>
+ <div class="limits card"><h3>What FoliaTrace will not do</h3><ul><li><strong>It never says “safe”.</strong> No NIH statement for a combination does not mean the combination is safe; NIH notes that “some herbs and medicines interact in harmful ways.”</li><li><strong>It does not replace a pharmacist</strong> or give doses. It prepares the conversation.</li><li><strong>It covers 25 commonly used herbs.</strong> Other botanicals are listed on your brief as “not covered” instead of being silently skipped.</li><li><strong>It reads labels, not bottles.</strong> NIH notes that some products contain herbs not listed on the label.</li></ul></div>
+ <details class="card"><summary>Where AI is used — and what has been measured</summary><p><strong>Label photos:</strong> an LSTM text-recognition model (Tesseract) runs in the browser; tolerant name matching recovers common misreadings and the person reviews the text before it is used. <strong>Research ranking:</strong> a pinned cross-encoder reranks keyword candidates in a Web Worker. <strong>Safety statements</strong> are deterministic matches to verified NIH text — no generative model writes a warning.</p><div class="table-wrap"><table><caption>Retrieval evaluation of the full app (SciFact development split, 188 claims, 5,183 abstracts)</caption><thead><tr><th scope="col">Method</th><th scope="col">Recall @ 10</th><th scope="col">nDCG @ 10</th></tr></thead><tbody><tr><th scope="row">BM25</th><td>0.924</td><td>0.812</td></tr><tr><th scope="row">Hybrid + cross-encoder</th><td>0.955</td><td>0.866</td></tr></tbody></table></div><p class="small">Component evidence on an external biomedical dataset with published development labels — not clinical validation. <a href="retrieval-evaluation.json">Recorded evaluation</a> · <a href="safety-knowledge.json">The NIH knowledge base</a> · <a href="DATA-NOTICE.md">Source attribution</a></p></details>
+</section>
+
+<section class="download-section"><div><p class="eyebrow">Take it further</p><h2>The complete app.<br>For the whole consultation.</h2><p>Saved, versioned preparations; NIH label-version comparison; clarification history; study-to-product comparisons; pharmacist reading decisions; selective handoff exports. Runs locally with Python, no paid AI.</p></div><div class="download-actions"><a class="button" href="source.zip" download>Download source &amp; setup guide ↗</a><a href="one-page.pdf">One-page overview</a></div></section>
+</main><footer><span class="brand">f. FoliaTrace</span><p>DSH Hacks V2 · A human-centered healthcare tool · Not medical advice</p><a href="DATA-NOTICE.md">Data attribution</a><a href="CODE-LICENSE.txt">Code license</a></footer>
+<div id="print-root" aria-hidden="true"></div>
+</body></html>
