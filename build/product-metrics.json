@@ -1,0 +1,12 @@
+{
+ "library_count": 423,
+ "medicine_wrong": 0,
+ "medicine_phrases": 54,
+ "medicine_recall": "95%",
+ "medicine_correct": 37,
+ "medicine_drugs": 39,
+ "species_precision": "96%",
+ "labels_holdout": 789,
+ "labels_total": "1,576",
+ "blend_percent": "48%"
+}

@@ -1,4 +1,5 @@
 const $=s=>document.querySelector(s);
+fetch('product-metrics.json').then(r=>{if(!r.ok)throw Error();return r.json()}).then(metrics=>{for(const node of document.querySelectorAll('[data-metric]'))if(metrics[node.dataset.metric]!==undefined)node.textContent=metrics[node.dataset.metric];}).catch(()=>{});
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
 // Recorded pharmacist evidence examples and live on-device research search.
 function sourceLink(text,url){const a=el('a',text);try{const u=new URL(url);if(!['https:','http:'].includes(u.protocol))throw Error();a.href=u.href;a.target='_blank';a.rel='noopener noreferrer';}catch{a.removeAttribute('href');}return a;}

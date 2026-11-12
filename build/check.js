@@ -1,16 +1,25 @@
 import {indexKnowledge, parseLabelText, fromDsldLabel, analyze, resolveMedicines, norm} from './safety-engine.js';
 import {EXAMPLES} from './safety-examples.js';
+import {researchQueries} from './research-evidence.js';
 
 const $ = s => document.querySelector(s);
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 const el = (tag, text, cls) => { const n = document.createElement(tag); if (text !== undefined) n.textContent = text; if (cls) n.className = cls; return n; };
 const DSLD = 'https://api.ods.od.nih.gov/dsld/v9/';
 const STORE = 'foliatrace.check.v2';
+let saveAllowed = !location.hash.startsWith('#brief=');
 
 let kb, idx, result = null, ocrWorker = null, ocrPending = false;
-const state = {products: [], medicines: [], conditions: [], example: null};
+const state = {products: [], medicines: [], conditions: [], example: null, aiMeds: {}, reason: ''};
 
-function save() { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch {} }
+function save() { if (!saveAllowed) return; try { localStorage.setItem(STORE, JSON.stringify({...state, aiVersion: 2})); } catch {} }
+function cleanAi(a) {
+  const out = {};
+  for (const [k, v] of Object.entries(a && typeof a === 'object' ? a : {}).slice(0, 40)) {
+    if (typeof k === 'string' && k.length <= 80 && v && typeof v === 'object') out[k] = {group: typeof v.group === 'string' && kb.ai_medicine_groups.groups.some(g => g.id === v.group) ? v.group : null, score: Number(v.score) || 0};
+  }
+  return out;
+}
 function load() {
   try {
     const s = JSON.parse(localStorage.getItem(STORE) || 'null');
@@ -18,8 +27,40 @@ function load() {
       state.products = s.products.filter(p => p && typeof p.name === 'string' && Array.isArray(p.ingredients) && p.ingredients.length <= 120);
       state.medicines = s.medicines.filter(m => typeof m === 'string' && m.length <= 80);
       state.conditions = (s.conditions || []).filter(c => kb.conditions[c]);
+      state.aiMeds = s.aiVersion === 2 ? cleanAi(s.aiMeds) : {}; state.reason = typeof s.reason === 'string' ? s.reason.slice(0, 120) : '';
     }
   } catch {}
+}
+
+// ------------------------------------------------------------- on-device AI
+// 1. Language understanding (ai-worker.js, all-MiniLM-L6-v2): how a person describes a medicine.
+// 2. Research ranking (model-search-worker.js, MiniLM cross-encoder): studies for each herb and reason.
+function workerClient(file) {
+  let w = null, seq = 0; const waiting = new Map();
+  return (msg, onProgress) => {
+    if (!w) {
+      w = new Worker(new URL(file, location.href), {type: 'module'});
+      w.onmessage = ({data}) => { const p = waiting.get(data.id); if (!p) return; if (data.type === 'progress') { p.onProgress?.(data.text); return; } waiting.delete(data.id); data.type === 'error' ? p.reject(Error(data.text)) : p.resolve(data); };
+      w.onerror = () => { for (const p of waiting.values()) p.reject(Error('on-device AI could not start')); waiting.clear(); w = null; };
+    }
+    const id = ++seq; return new Promise((resolve, reject) => { waiting.set(id, {resolve, reject, onProgress}); w.postMessage({...msg, id}); });
+  };
+}
+const understandAI = workerClient('ai-worker.js');
+const researchAI = workerClient('model-search-worker.js');
+let aiBusy = false, aiPending = Promise.resolve();
+const aiInFlight = new Set();
+function understandMedicines() {
+  const todo = resolveMedicines(state.medicines, idx).filter(m => !m.known && !m.excluded && !(m.input in state.aiMeds) && !aiInFlight.has(m.input)).map(m => m.input);
+  if (!todo.length) return aiPending;
+  aiBusy = true; renderMeds();
+  todo.forEach(t => aiInFlight.add(t));
+  aiPending = aiPending.then(() => understandAI({type: 'classify', texts: todo, threshold: kb.ai_medicine_groups.threshold, margin: kb.ai_medicine_groups.margin,
+    groups: kb.ai_medicine_groups.groups}))
+    .then(({results}) => { let changed = false; for (const r of results) if (state.medicines.includes(r.text)) { state.aiMeds[r.text] = {group: r.group, score: r.score}; changed = true; } if (changed) save(); })
+    .catch(() => { $('#run-hint').textContent = 'Medicine AI is unavailable. Enter the exact name, or keep it as a question for your pharmacist.'; })
+    .finally(() => { todo.forEach(t => aiInFlight.delete(t)); aiBusy = aiInFlight.size > 0; renderMeds(); });
+  return aiPending;
 }
 
 // ------------------------------------------------------------------ rendering
@@ -36,9 +77,11 @@ function renderExamples() {
 }
 
 function runExample(id) {
+  invalidateBrief();
   const ex = EXAMPLES.find(e => e.id === id);
   state.products = ex.products.map(p => ({...parseLabelText(p.text, p.name), fictional: true}));
-  state.medicines = [...ex.medicines]; state.conditions = [...ex.conditions]; state.example = ex.id;
+  state.medicines = [...ex.medicines]; state.conditions = [...ex.conditions]; state.example = ex.id; state.reason = ex.reason || '';
+  $('#reason-input').value = state.reason;
   save(); renderAll(); runCheck(true);
 }
 
@@ -54,7 +97,7 @@ function renderProducts() {
     const active = p.ingredients.filter(x => !x.other);
     card.append(head, el('p', active.slice(0, 6).map(x => x.name || x.text).join(' · ') + (active.length > 6 ? ` · +${active.length - 6} more` : ''), 'small ingredients-line'));
     const rm = el('button', 'Remove', 'quiet small-btn'); rm.type = 'button'; rm.setAttribute('aria-label', 'Remove ' + p.name);
-    rm.onclick = () => { state.products.splice(i, 1); state.example = null; save(); renderAll(); };
+    rm.onclick = () => { invalidateBrief(); state.products.splice(i, 1); state.example = null; save(); renderAll(); };
     if (p.url) { const a = el('a', 'View NIH record ↗'); a.href = p.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.className = 'small'; card.append(a); }
     card.append(rm);
     box.append(card);
@@ -63,13 +106,15 @@ function renderProducts() {
 
 function renderMeds() {
   const box = $('#med-list'); box.replaceChildren();
-  const resolved = resolveMedicines(state.medicines, idx);
+  const resolved = resolveMedicines(state.medicines, idx, state.aiMeds);
   for (const [i, m] of resolved.entries()) {
-    const li = el('li', undefined, 'chip ' + (m.known ? 'known' : 'unknown'));
+    const pending = !m.known && aiBusy && !(m.input in state.aiMeds);
+    const li = el('li', undefined, 'chip ' + (m.inferred ? 'ai' : m.known ? 'known' : pending ? 'pending' : 'unknown'));
     li.append(el('span', m.input));
-    li.append(el('span', m.known ? (m.corrected ? `read as ${m.name}` : (norm(m.input).startsWith(m.name) ? '✓' : m.name)) : 'not recognised', 'chip-note'));
+    if (m.inferred || pending) li.append(el('span', 'AI', 'pill pill-ai'));
+    li.append(el('span', m.inferred ? `suggests ${m.name} · confirm` : pending ? 'AI is reading…' : m.known ? (m.corrected ? `read as ${m.name}` : (norm(m.input).startsWith(m.name) ? '✓' : m.name)) : m.excluded === 'not_current' ? 'confirm if currently taken' : 'not recognised', 'chip-note'));
     const x = el('button', '×', 'chip-x'); x.type = 'button'; x.setAttribute('aria-label', 'Remove ' + m.input);
-    x.onclick = () => { state.medicines.splice(i, 1); state.example = null; save(); renderAll(); };
+    x.onclick = () => { invalidateBrief(); state.medicines.splice(i, 1); state.example = null; save(); renderAll(); };
     li.append(x); box.append(li);
   }
 }
@@ -78,7 +123,7 @@ function renderConditions() {
   const box = $('#condition-list'); box.replaceChildren();
   for (const [id, label] of Object.entries(kb.conditions)) {
     const l = el('label', undefined, 'check'); const c = el('input'); c.type = 'checkbox'; c.value = id; c.checked = state.conditions.includes(id);
-    c.onchange = () => { state.conditions = [...box.querySelectorAll('input:checked')].map(x => x.value); state.example = null; save(); };
+    c.onchange = () => { invalidateBrief(); state.conditions = [...box.querySelectorAll('input:checked')].map(x => x.value); state.example = null; save(); };
     l.append(c, el('span', label)); box.append(l);
   }
   if (state.conditions.length) $('#conditions-box').open = true;
@@ -106,7 +151,7 @@ function findingTitle(f) {
 }
 function findingSub(f) {
   const parts = [`In ${f.products.map(esc).join(' and ')}`];
-  if (f.because === 'medicine') { const m = f.medicines[0]; if (m.label) parts.push(`${esc(m.corrected ? m.name : m.input)} is ${esc(m.label)}`); else if (m.corrected) parts.push(`read as ${esc(m.name)}`); }
+  if (f.because === 'medicine') { const m = f.medicines[0]; if (m.inferred) parts.push(`<span class="pill pill-ai">AI</span> understood “${esc(m.input)}” as ${esc(m.label)}`); else if (m.label) parts.push(`${esc(m.corrected ? m.name : m.input)} is ${esc(m.label)}`); else if (m.corrected) parts.push(`read as ${esc(m.name)}`); }
   if (f.because === 'always' && f.medicines.length) parts.push(`Also ask about: ${f.medicines.map(m => esc(m.input)).join(', ')}`);
   return parts.join(' · ');
 }
@@ -134,6 +179,7 @@ function gapHTML(g) {
   if (g.type === 'unverified') return `<li><strong>${esc(g.ingredient)}</strong>: not covered — ask your pharmacist.</li>`;
   if (g.type === 'duplicate') return `<li><strong>${esc(g.herbName)}</strong> is in ${g.products.length} products: ${g.products.map(esc).join(', ')}.</li>`;
   if (g.type === 'unknown_medicine') return `<li>We did not recognise the medicine <strong>${esc(g.input)}</strong> — tell your pharmacist.</li>`;
+  if (g.type === 'inferred_medicine') return `<li><span class="pill pill-ai">AI</span> understood <strong>${esc(g.input)}</strong> as ${esc(g.label)}. Confirm the exact medicine with your pharmacist.</li>`;
   return '';
 }
 
@@ -144,16 +190,20 @@ function briefHTML(r, opts = {meds: true, conditions: true, ingredients: true}, 
   if (forPrint) {
     // qr is an SVG generated locally from our own base64url link; it contains no user-supplied markup.
     h += `<header class="print-head">${qr ? `<div class="print-qr">${qr}<span>Scan to open this brief with live NIH links</span></div>` : ''}<h1>Pharmacist brief</h1><p>Prepared ${esc(new Date().toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'}))} with FoliaTrace · ${r.counts.discuss} to discuss · ${r.counts.caution} cautions · ${r.gaps.length} label questions · for discussion with a pharmacist or clinician · not medical advice</p></header>`;
-    if (opts.meds) h += `<p><strong>Medicines I take:</strong> ${r.medicines.length ? r.medicines.map(m => esc(m.input) + (m.known && m.corrected ? ` (read as ${esc(m.name)})` : '')).join(', ') : 'none entered'}</p>`;
+    if (opts.meds) h += `<p><strong>Medicines I take:</strong> ${r.medicines.length ? r.medicines.map(m => esc(m.input) + (m.inferred ? ` (AI: ${esc(m.name)}, to confirm)` : m.known && m.corrected ? ` (read as ${esc(m.name)})` : '')).join(', ') : 'none entered'}</p>`;
+    if (state.reason) h += `<p><strong>I take the supplements for:</strong> ${esc(state.reason)}</p>`;
     if (opts.conditions && r.conditions.length) h += `<p><strong>About me:</strong> ${r.conditions.map(c => esc(kb.conditions[c])).join('; ')}</p>`;
     h += '<h2>Products</h2>' + state.products.map(p => `<div class="print-product"><strong>${esc(p.name)}</strong>${p.brand ? ' · ' + esc(p.brand) : ''}${p.source === 'dsld' ? ` · NIH DSLD label #${esc(p.dsldId)}` : p.fictional ? ' · fictional example' : p.source === 'ocr' ? ' · text read from photo' : ''}${opts.ingredients ? `<p class="small">${p.ingredients.filter(x => !x.other).map(x => esc(x.text.split(' · ')[0])).join('; ')}</p>` : ''}</div>`).join('');
   }
+  const inferred = r.medicines.filter(m => m.inferred);
+  if (opts.meds && inferred.length) h += `<section class="brief-sec ai-understanding"><h3><span class="pill pill-ai">AI</span> From your words to a medicine group</h3>${inferred.map(m => `<p><strong>“${esc(m.input)}”</strong> → ${esc(m.name)}</p>`).join('')}<p class="small">A suggested group, not an identified medicine. Confirm the exact name with your pharmacist.</p></section>`;
   h += `<section class="brief-sec"><h3>${main.length ? 'Raise these first' : 'Nothing NIH names for your medicines'}</h3>`;
   h += main.length ? `<div class="findings">${main.map(f => findingHTML(f)).join('')}</div>` : `<p>That doesn’t mean safe — NIH: “${esc(kb.general_quote)}”</p>`;
   h += '</section>';
   if (ident.length || other.length) {
     h += `<section class="brief-sec"><h3>What the label doesn’t settle</h3>${ident.map(gapHTML).join('')}${other.length ? `<ul class="gap-list">${other.map(gapHTML).join('')}</ul>` : ''}</section>`;
   }
+  h += forPrint ? researchPrintHTML() : '<section class="brief-sec ai-sec" id="ai-research" aria-live="polite"></section>';
   if (notes.length) h += `<section class="brief-sec"><h3>Label &amp; product quality notes</h3><div class="findings">${notes.map(f => findingHTML(f, true)).join('')}</div></section>`;
   const rows = r.checked.map(c => `<tr><th scope="row">${esc(c.ingredient.split(' · ')[0])}${c.amount ? `<span class="small"> · ${esc(c.amount)}</span>` : ''}<br><span class="small">${esc(c.productName)}</span></th><td><a href="${esc(c.source.url)}" target="_blank" rel="noopener noreferrer">${esc(c.herbName)}</a>${c.basis === 'label_species' ? `<br><span class="pill">label states <i>${esc(c.species)}</i></span>` : ''}${c.basis === 'fuzzy' ? `<br><span class="pill">read from photo as “${esc(c.read)}”</span>` : ''}${c.identity_note ? `<br><span class="small">${esc(c.identity_note)}</span>` : ''}</td><td>${c.flagged ? 'See above' : 'Nothing for you'}${forPrint ? '' : `<br><button type="button" class="link research" data-herb="${esc(c.herbName)}">Research this herb →</button>`}</td></tr>`).join('');
   const others = (r.unmatched || []).map(u => esc(u.ingredient.split(' · ')[0]));
@@ -170,17 +220,81 @@ function summaryHTML(r) {
     + n(r.checked.length, (r.checked.length === 1 ? 'herb' : 'herbs') + ' checked', 'sum-checked');
 }
 
-function runCheck(scroll = true) {
+// ------------------------------------------------ AI research leads in the brief
+let leads = [], leadsToken = 0, checkToken = 0;
+function invalidateBrief() {
+  ++checkToken; ++leadsToken; leads = []; result = null;
+  $('#brief').hidden = true; delete $('#brief').dataset.leads;
+  $('#handoff').hidden = true;
+  $('#run-check').textContent = 'Build my brief →';
+  if (downloadUrl) { URL.revokeObjectURL(downloadUrl); downloadUrl = null; }
+  $('#download-brief').removeAttribute('href');
+}
+const LEAD_MIN = 2.0; // raw cross-encoder logit, calibrated on demo development queries; not a probability
+const coreName = n => n.replace(/\s*\/.*$/, '').replace(/\s+(oil|extract|root)$/i, '').trim();
+function researchPrintHTML() {
+  const shown = leads.filter(l => l.rows.length);
+  if (!shown.length) return '';
+  return `<section class="brief-sec"><h3>Research leads, ranked by on-device AI</h3>${shown.map(l => `<p><strong>${esc(l.herb)}</strong>${l.query ? ` · ${esc(state.reason)}` : ''}</p><ul>${l.rows.map(r => `<li><a href="${esc(r.url)}">${esc(r.title.replace(/<[^>]*>/g, ''))}</a></li>`).join('')}</ul>`).join('')}<p class="small">Reading leads for the pharmacist, not a verdict on benefit or safety.</p></section>`;
+}
+function leadHTML(row, lead) {
+  const bottle = (result?.checked || []).filter(c => c.herb === lead.herbId).map(c => `${c.ingredient}${c.amount ? ' · ' + c.amount : ''} (${c.productName})`).join('; ');
+  return `<li><a href="${esc(row.url)}" target="_blank" rel="noopener noreferrer">${esc(row.title.replace(/<[^>]*>/g, ''))}</a><p class="small">AI matched to: ${esc(row.goal)}</p><details class="lead-context"><summary>Compare source wording with your bottle</summary><p><strong>Your label:</strong> ${esc(bottle)}</p>${(row.context || []).map(c => `<h5>${esc(c.label)}</h5>${c.span ? `<blockquote>${esc(c.span.text)}</blockquote>` : '<p class="small">No excerpt identified; read the abstract.</p>'}`).join('')}<p class="small">Literal abstract excerpts · ${esc(row.licence)}. Text cues only; your pharmacist checks whether the study applies.</p></details></li>`;
+}
+function renderLeads(status) {
+  const box = $('#ai-research'); if (!box) return;
+  const rows = leads.map(l => `<article class="lead-group"><h4>${esc(l.herb)}${state.reason ? ` <span class="small">· for ${esc(state.reason)}</span>` : ''}</h4>${
+    l.pending ? '<p class="small">AI is ranking…</p>' : l.rows.length ? `<ol>${l.rows.map(r => leadHTML(r, l)).join('')}</ol>`
+    : `<p class="small">${l.error ? 'On-device research is unavailable. Retry by rebuilding the brief.' : 'No closely matching study in the on-device library.'}</p>`}</article>`).join('');
+  box.innerHTML = `<h3><span class="pill pill-ai">AI</span> Research leads, ranked on your device</h3><p class="small ai-status">${esc(status)}</p><div class="leads">${rows}</div>`;
+}
+async function runResearch(r) {
+  const token = ++leadsToken;
+  const reason = state.reason;
+  const herbs = [...new Map(r.checked.map(c => [c.herb, c])).values()].slice(0, 6);
+  leads = herbs.map(c => ({herbId: c.herb, herb: coreName(c.herbName), rows: [], pending: true, query: !!state.reason}));
+  if (!leads.length) { renderLeads(''); return; }
+  renderLeads('AI is ranking the on-device research library…');
+  const t0 = performance.now();
+  for (const l of leads) {
+    const h = idx.herbs.get(l.herbId);
+    const names = [l.herb, ...h.latin, ...h.aliases.filter(a => a.length >= 6)].map(norm);
+    try {
+      const found = new Map(); l.all = [];
+      for (const {goal, query} of researchQueries(l.herb, reason)) {
+        const res = await researchAI({query, method: 'ai', herbNames: names, patientLeads: true}, () => {});
+        if (token !== leadsToken) return;
+        l.all.push(...res.rows.map(row => ({id: row.id, title: row.title, score: row.score, goal})));
+        for (const row of res.rows) if (row.score >= LEAD_MIN && names.some(n => norm(row.title + ' ' + row.abstract).includes(n)) && row.score > (found.get(row.id)?.score ?? -Infinity)) found.set(row.id, {...row, goal});
+      }
+      l.rows = [...found.values()].sort((a, b) => b.score - a.score || a.id.localeCompare(b.id)).slice(0, 2);
+    } catch { if (token !== leadsToken) return; l.rows = []; l.error = true; }
+    l.pending = false;
+    renderLeads(`AI is ranking on this device… ${leads.filter(x => !x.pending).length} of ${leads.length} herbs done`);
+  }
+  renderLeads(`${leads.some(l => l.error) ? 'Research incomplete' : 'Ranked'} on this device in ${((performance.now() - t0) / 1000).toFixed(1)} s. Reading leads for the pharmacist. Study populations and preparations may differ from your bottle.`);
+  $('#brief').dataset.leads = leads.reduce((n, l) => n + l.rows.length, 0);
+  $('#brief').dataset.research = JSON.stringify(leads.map(l => ({herb: l.herb, all: l.all, shown: l.rows.map(r => ({id: r.id, score: r.score, goal: r.goal}))})));
+  updateDownload();
+}
+
+async function runCheck(scroll = true) {
   if (!state.products.length) return;
-  result = analyze({products: state.products, medicines: state.medicines, conditions: state.conditions}, idx);
+  const token = ++checkToken; ++leadsToken; leads = [];
+  $('#run-check').disabled = true; $('#run-check').textContent = 'Understanding your medicines…';
+  understandMedicines(); await aiPending;
+  if (token !== checkToken || !state.products.length) return;
+  result = analyze({products: state.products, medicines: state.medicines, conditions: state.conditions, aiMedicines: state.aiMeds}, idx);
   $('#brief-summary').innerHTML = summaryHTML(result);
   $('#brief-body').innerHTML = briefHTML(result);
   $('#brief-foot').textContent = '';
   $('#brief').hidden = false;
+  $('#run-check').disabled = false; $('#run-check').textContent = 'Build my brief →';
   $('#brief').dataset.discuss = result.counts.discuss;
   for (const b of document.querySelectorAll('#brief .research')) b.onclick = () => window.dispatchEvent(new CustomEvent('foliatrace:research', {detail: `${b.dataset.herb} clinical trial`}));
   updateDownload();
   if (scroll) { $('#brief').scrollIntoView({block: 'start'}); $('#brief').focus({preventScroll: true}); }
+  runResearch(result);
 }
 
 let downloadUrl = null;
@@ -209,7 +323,8 @@ const b64url = bytes => btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').
 const unb64url = s => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
 async function pipe(bytes, stream) { return new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(stream)).arrayBuffer()); }
 async function encodeBrief() {
-  const compact = {v: 1, m: state.medicines, c: state.conditions, p: state.products.map(p => ({n: p.name, s: p.source, b: p.brand || undefined, d: p.dsldId || undefined, f: p.fictional ? 1 : undefined,
+  const compact = {v: 1, m: state.medicines, c: state.conditions, r: state.reason || undefined,
+    a: Object.fromEntries(Object.entries(state.aiMeds).filter(([k, v]) => v.group && state.medicines.includes(k)).map(([k, v]) => [k, [v.group, v.score]])), p: state.products.map(p => ({n: p.name, s: p.source, b: p.brand || undefined, d: p.dsldId || undefined, f: p.fictional ? 1 : undefined,
     i: p.ingredients.filter(x => !x.other).map(x => [String(x.text).slice(0, 160), x.name || '', x.amount || '', x.genus || '', x.species || '', x.blend || '', x.blendTotal || '', x.category || ''])}))};
   return b64url(await pipe(new TextEncoder().encode(JSON.stringify(compact)), new CompressionStream('deflate-raw')));
 }
@@ -221,6 +336,8 @@ async function decodeBrief(token) {
   return {
     medicines: (data.m || []).filter(x => typeof x === 'string').slice(0, 40).map(x => x.slice(0, 80)),
     conditions: (data.c || []).filter(c => kb.conditions[c]),
+    reason: str(data.r, 120),
+    aiMeds: cleanAi(Object.fromEntries(Object.entries(data.a && typeof data.a === 'object' ? data.a : {}).map(([k, v]) => [k, {group: Array.isArray(v) ? v[0] : null, score: Array.isArray(v) ? v[1] : 0}]))),
     products: data.p.map(p => ({name: str(p.n, 120) || 'Product', source: ['dsld', 'ocr', 'text'].includes(p.s) ? p.s : 'text', brand: str(p.b, 80), dsldId: Number.isInteger(p.d) ? p.d : undefined,
       url: Number.isInteger(p.d) ? `https://dsld.od.nih.gov/label/${p.d}` : undefined, fictional: !!p.f,
       ingredients: (p.i || []).slice(0, 120).map(r => ({text: str(r[0], 160), name: str(r[1], 160) || undefined, amount: str(r[2], 40) || null, genus: str(r[3], 40) || null, species: str(r[4], 40) || null,
@@ -273,7 +390,7 @@ async function dsldSearch(q) {
           const lr = await fetch(DSLD + 'label/' + encodeURIComponent(h._id)); if (!lr.ok) throw Error(lr.status === 429 ? 'NIH is limiting requests; try again in a minute' : 'label ' + lr.status);
           const p = fromDsldLabel(await lr.json());
           if (!p.ingredients.length) throw Error('this record lists no ingredients');
-          state.products.push(p); state.example = null; save(); renderAll();
+          invalidateBrief(); state.products.push(p); state.example = null; save(); renderAll();
           st.textContent = `Added “${p.name}” from NIH label #${p.dsldId}.`; add.textContent = 'Added ✓';
         } catch (e) { add.disabled = false; add.textContent = 'Add'; st.textContent = 'Could not load that label (' + e.message + '). Try another, or type the label.'; }
       };
@@ -331,21 +448,24 @@ async function boot() {
     if (text.length < 3) { f.elements.text.focus(); return; }
     const p = parseLabelText(text, f.elements.name.value.trim() || 'My product'); if (ocrPending) p.source = 'ocr';
     if (!p.ingredients.length) return;
-    state.products.push(p); state.example = null; ocrPending = false; save(); f.reset(); $('#text-status')?.remove(); renderAll();
+    invalidateBrief(); state.products.push(p); state.example = null; ocrPending = false; save(); f.reset(); $('#text-status')?.remove(); renderAll();
   };
   $('#photo-input').onchange = e => runOcr(e.target.files[0], selectTab);
   $('#med-form').onsubmit = e => {
     e.preventDefault(); const v = $('#med-input').value.trim();
+    invalidateBrief();
     for (const part of v.split(/,|;| and /i).map(s => s.trim()).filter(s => s.length > 1)) if (!state.medicines.some(m => norm(m) === norm(part)) && state.medicines.length < 40) state.medicines.push(part);
-    $('#med-input').value = ''; state.example = null; save(); renderMeds(); renderAll();
+    $('#med-input').value = ''; state.example = null; save(); renderMeds(); renderAll(); understandMedicines();
   };
+  $('#reason-input').value = state.reason;
+  $('#reason-input').oninput = e => { invalidateBrief(); state.reason = e.target.value.trim().slice(0, 120); state.example = null; save(); renderAll(); };
   $('#run-check').onclick = () => runCheck(true);
-  $('#clear-all').onclick = () => { state.products = []; state.medicines = []; state.conditions = []; state.example = null; try { localStorage.removeItem(STORE); } catch {} result = null; $('#brief').hidden = true; renderAll(); };
+  $('#clear-all').onclick = () => { invalidateBrief(); state.products = []; state.medicines = []; state.conditions = []; state.example = null; state.aiMeds = {}; state.reason = ''; $('#reason-input').value = ''; try { localStorage.removeItem(STORE); } catch {} renderAll(); };
   for (const id of ['share-meds', 'share-conditions', 'share-ingredients']) $('#' + id).onchange = updateDownload;
   $('#print-brief').onclick = async () => { $('#print-root').innerHTML = briefHTML(result, shareOpts(), true, await printQr()); window.print(); };
   $('#show-handoff').onclick = showHandoff;
   $('#copy-link').onclick = async () => { try { await navigator.clipboard.writeText($('#handoff-link').value); $('#copy-link').textContent = 'Copied ✓'; } catch { $('#handoff-link').select(); } setTimeout(() => { $('#copy-link').textContent = 'Copy link'; }, 2500); };
-  $('#keep-shared').onclick = () => { save(); $('#shared-banner').hidden = true; history.replaceState(null, '', location.pathname); $('#check').scrollIntoView({block: 'start'}); };
+  $('#keep-shared').onclick = () => { saveAllowed = true; save(); $('#shared-banner').hidden = true; history.replaceState(null, '', location.pathname); $('#check').scrollIntoView({block: 'start'}); };
   window.addEventListener('afterprint', () => { $('#print-root').innerHTML = ''; });
   $('#copy-questions').onclick = async () => {
     const qs = [...result.findings.filter(f => f.level !== 'note').map(f => f.question), ...result.gaps.filter(g => g.type === 'identity').map(g => `Which species is the “${g.ingredient}” in ${g.productName}?`)];
@@ -356,7 +476,7 @@ async function boot() {
   if (location.hash.startsWith('#brief=')) {
     try {
       const shared = await decodeBrief(location.hash.slice(7));
-      Object.assign(state, shared, {example: null}); renderAll(); runCheck(true); $('#shared-banner').hidden = false;
+      Object.assign(state, shared, {example: null}); $('#reason-input').value = state.reason; renderAll(); await runCheck(true); $('#shared-banner').hidden = false;
     } catch (e) { $('#run-hint').textContent = 'This shared brief link could not be opened (' + e.message + ').'; }
   }
   if (state.products.length && new URLSearchParams(location.search).has('resume')) runCheck(false);
