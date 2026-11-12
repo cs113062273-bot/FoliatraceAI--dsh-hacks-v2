@@ -12,7 +12,7 @@ FoliaTrace AI turns supplement labels and everyday medicine descriptions into a 
 - Describe your medicines and your goal for the supplement.
 - Read the questions and cited research, then share the brief by QR or export.
 
-Language understanding and research ranking run in the browser. This repository includes the static product and its pinned model assets.
+**Core AI:** MiniLM sentence embeddings for medicine descriptions, plus BM25 retrieval and MiniLM cross-encoder reranking for research. Inference runs in the browser. This repository includes the static product and its pinned model assets.
 
 ## Downloads
 
