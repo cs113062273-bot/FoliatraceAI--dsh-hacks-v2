@@ -8,5 +8,10 @@
  "species_precision": "96%",
  "labels_holdout": 789,
  "labels_total": "1,576",
- "blend_percent": "48%"
+ "blend_percent": "48%",
+ "retrieval_queries": 188,
+ "retrieval_documents": "5,183",
+ "retrieval_bm25": "0.812",
+ "retrieval_hybrid": "0.826",
+ "retrieval_rerank": "0.866"
 }

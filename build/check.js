@@ -159,7 +159,7 @@ function sourceLine(s) {
   return `<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">NIH · ${esc(s.title.replace(/\s*\|\s*NCCIH$/, ''))}</a>${s.updated ? ` · page updated ${esc(s.updated)}` : ''}`;
 }
 function findingHTML(f, compact = false) {
-  return `<article class="finding ${f.level}"><header><span class="tag">${LEVEL_TAG[f.level]}</span><h4>${findingTitle(f)}</h4><p class="small">${findingSub(f)}</p></header>
+  return `<article class="finding ${f.level}" data-herb="${esc(f.herb)}" data-medicine="${esc(f.medicines?.[0]?.input || '')}"><header><span class="tag">${LEVEL_TAG[f.level]}</span><h4>${findingTitle(f)}</h4><p class="small">${findingSub(f)}</p></header>
   ${f.quotes.map(q => `<blockquote class="nih"><p>${fmtQuote(q)}</p></blockquote>`).join('')}
   <p class="nih-source small">${sourceLine(f.source)}</p>${compact ? '' : `<p class="ask"><strong>Ask:</strong> ${esc(f.question)}</p>`}</article>`;
 }
@@ -194,14 +194,17 @@ function briefHTML(r, opts = {meds: true, conditions: true, ingredients: true}, 
   let h = '';
   if (forPrint) {
     // qr is an SVG generated locally from our own base64url link; it contains no user-supplied markup.
-    h += `<header class="print-head">${qr ? `<div class="print-qr">${qr}<span>Scan to open this brief with live NIH links</span></div>` : ''}<h1>Pharmacist brief</h1><p>Prepared ${esc(new Date().toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'}))} with FoliaTrace · ${r.counts.discuss} to discuss · ${r.counts.caution} cautions · ${r.gaps.length} label questions · for discussion with a pharmacist or clinician · not medical advice</p></header>`;
+    h += `<header class="print-head">${qr ? `<div class="print-qr">${qr}<span>Scan to open this brief with live NIH links</span></div>` : ''}<h1>Pharmacist brief</h1><p>Prepared ${esc(new Date().toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'}))} with FoliaTrace AI · ${r.counts.discuss} to discuss · ${r.counts.caution} cautions · ${r.gaps.length} label questions · for discussion with a pharmacist or clinician · not medical advice</p></header>`;
     if (opts.meds) h += `<p><strong>Medicines I take:</strong> ${r.medicines.length ? r.medicines.map(m => esc(m.input) + (m.inferred ? ` (AI: ${esc(m.name)}, to confirm)` : m.known && m.corrected ? ` (read as ${esc(m.name)})` : '')).join(', ') : 'none entered'}</p>`;
     if (opts.conditions && state.reason) h += `<p><strong>I take the supplements for:</strong> ${esc(state.reason)}</p>`;
     if (opts.conditions && r.conditions.length) h += `<p><strong>About me:</strong> ${r.conditions.map(c => esc(kb.conditions[c])).join('; ')}</p>`;
     h += '<h2>Products</h2>' + state.products.map(p => `<div class="print-product"><strong>${esc(p.name)}</strong>${p.brand ? ' · ' + esc(p.brand) : ''}${p.source === 'dsld' ? ` · NIH DSLD label #${esc(p.dsldId)}` : p.fictional ? ' · fictional example' : p.source === 'ocr' ? ' · text read from photo' : ''}${opts.ingredients ? `<p class="small">${p.ingredients.filter(x => !x.other).map(x => esc(x.text.split(' · ')[0])).join('; ')}</p>` : ''}</div>`).join('');
   }
   const inferred = r.medicines.filter(m => m.inferred);
-  if (opts.meds && inferred.length) h += `<section class="brief-sec ai-understanding"><h3><span class="pill pill-ai">AI</span> From your words to a medicine group</h3>${inferred.map(m => `<p><strong>“${esc(m.input)}”</strong> → ${esc(m.name)}</p>`).join('')}<p class="small">A suggested group, not an identified medicine. Confirm the exact name with your pharmacist.</p></section>`;
+  if (opts.meds && inferred.length) h += `<section class="brief-sec ai-understanding"><h3><span class="pill pill-ai">AI</span> From your words to a medicine group</h3>${inferred.map(m => {
+    const linked = [...new Map(r.findings.filter(f => f.because === 'medicine' && f.medicines.some(x => x.input === m.input)).map(f => [f.herb, f])).values()];
+    return `<p><strong>“${esc(m.input)}”</strong> → ${esc(m.name)}</p><details class="inference-trace"><summary>See the AI evidence trail</summary><p><strong>Name lookup:</strong> no exact medicine name matched this description.</p><p><strong>Language AI:</strong> suggested ${esc(m.name)} from the meaning of your words.</p><p><strong>NIH source cards:</strong> ${linked.length ? linked.map(f => esc(f.herbName)).join(', ') : 'No additional medicine-specific card from this hypothesis.'}</p>${forPrint ? '' : linked.map(f => `<button type="button" class="link" data-jump-source="${esc(f.herb)}" data-input="${esc(m.input)}">Read ${esc(f.herbName)} NIH card →</button>`).join('')}</details>`;
+  }).join('')}<p class="small">A suggested group, not an identified medicine. Confirm the exact name with your pharmacist.</p></section>`;
   h += `<section class="brief-sec"><h3>${main.length ? 'Raise these first' : 'Nothing NIH names for your medicines'}</h3>`;
   h += main.length ? `<div class="findings">${main.map(f => findingHTML(f)).join('')}</div>` : `<p>That doesn’t mean safe — NIH: “${esc(kb.general_quote)}”</p>`;
   h += '</section>';
@@ -299,6 +302,10 @@ async function runCheck(scroll = true) {
   $('#run-check').disabled = false; $('#run-check').textContent = 'Build my brief →';
   $('#brief').dataset.discuss = result.counts.discuss;
   for (const b of document.querySelectorAll('#brief .research')) b.onclick = () => window.dispatchEvent(new CustomEvent('foliatrace:research', {detail: `${b.dataset.herb} clinical trial`}));
+  for (const b of document.querySelectorAll('[data-jump-source]')) b.onclick = () => {
+    const card = [...document.querySelectorAll('#brief .finding')].find(c => c.dataset.herb === b.dataset.jumpSource && c.dataset.medicine === b.dataset.input);
+    if (card) { card.tabIndex = -1; card.scrollIntoView({block: 'center'}); card.focus({preventScroll: true}); }
+  };
   updateDownload();
   if (scroll) { $('#brief').scrollIntoView({block: 'start'}); $('#brief').focus({preventScroll: true}); }
   runResearch(result);
@@ -307,7 +314,7 @@ async function runCheck(scroll = true) {
 let downloadUrl = null;
 function shareOpts() { return {meds: $('#share-meds').checked, conditions: $('#share-conditions').checked, ingredients: $('#share-ingredients').checked}; }
 function standalone(body) {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pharmacist brief · FoliaTrace</title><style>${PRINT_CSS}</style></head><body>${body}</body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pharmacist brief · FoliaTrace AI</title><style>${PRINT_CSS}</style></head><body>${body}</body></html>`;
 }
 // The QR (which carries everything) is only added when everything is chosen for sharing.
 async function printQr() { const o = shareOpts(); if (!(o.meds && o.conditions && o.ingredients)) return ''; try { return await qrSvg(await shareLink()); } catch { return ''; } }
