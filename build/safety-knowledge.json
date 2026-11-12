@@ -1,0 +1,2991 @@
+{
+ "version": "2026.11.12",
+ "built": "2026-11-12",
+ "verified_passages": 74,
+ "scope": "Statements quoted verbatim from NCCIH “Usefulness and Safety” fact sheets (U.S. National Institutes of Health; public domain). Only medicines or groups that a quoted sentence names are matched. Not finding a statement does not mean a combination is safe.",
+ "general_quote": "some herbs and medicines interact in harmful ways.",
+ "sources": {
+  "st-johns-wort": {
+   "url": "https://www.nccih.nih.gov/health/st-johns-wort",
+   "title": "St. John's Wort: Usefulness and Safety",
+   "updated": "May 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "7f4c0c605cb09080224c0073e860c2283680f6794e33e3ce37b85fe512b2d2a3",
+   "common_names": [
+    "St. John's wort",
+    "hypericum",
+    "Klamath weed",
+    "goatweed"
+   ],
+   "latin_names": [
+    "Hypericum perforatum"
+   ],
+   "general_advice": true
+  },
+  "ginkgo": {
+   "url": "https://www.nccih.nih.gov/health/ginkgo",
+   "title": "Ginkgo: Usefulness and Safety",
+   "updated": "February 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "865385884a20fccc29734ff47d1ce8e9dba0ecc3bda81207d2a6fea1fc12efb3",
+   "common_names": [
+    "ginkgo",
+    "Ginkgo biloba",
+    "fossil tree",
+    "maidenhair tree",
+    "Japanese silver apricot"
+   ],
+   "latin_names": [
+    "Ginkgo biloba"
+   ],
+   "general_advice": true
+  },
+  "goldenseal": {
+   "url": "https://www.nccih.nih.gov/health/goldenseal",
+   "title": "Goldenseal: Usefulness and Safety",
+   "updated": "February 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "41fc1fe1266ca3a8becd6463a5b3387fcc4599e5deba0835a1bc519122187807",
+   "common_names": [
+    "goldenseal",
+    "yellow root",
+    "goldenroot",
+    "yellow pucoon"
+   ],
+   "latin_names": [
+    "Hydrastis canadensis"
+   ],
+   "general_advice": true
+  },
+  "red-yeast-rice": {
+   "url": "https://www.nccih.nih.gov/health/red-yeast-rice",
+   "title": "Red Yeast Rice",
+   "updated": "November 2022",
+   "retrieved": "2026-11-12",
+   "text_sha256": "171623d3de5941a5198cbc08004710854d8ff96231e2acd15af975d080b9828b",
+   "common_names": [],
+   "latin_names": [],
+   "general_advice": false
+  },
+  "licorice-root": {
+   "url": "https://www.nccih.nih.gov/health/licorice-root",
+   "title": "Licorice Root: Usefulness and Safety",
+   "updated": "April 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "3f348bc80da271a3489ccb4402a35c99363e314fad7f536260d53fcb185c972e",
+   "common_names": [
+    "licorice root",
+    "licorice",
+    "liquorice",
+    "sweet root",
+    "gan cao",
+    "gan zao",
+    "Chinese licorice"
+   ],
+   "latin_names": [
+    "Glycyrrhiza glabra",
+    "Glycyrrhiza uralensis",
+    "Glycyrrhiza inflata"
+   ],
+   "general_advice": true
+  },
+  "garlic": {
+   "url": "https://www.nccih.nih.gov/health/garlic",
+   "title": "Garlic: Usefulness and Safety",
+   "updated": "February 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "4d275da2445ba1af170cb0f64cc1336536b39abb70c4ae296e7eff1e0d2ef3e2",
+   "common_names": [
+    "garlic"
+   ],
+   "latin_names": [
+    "Allium sativum"
+   ],
+   "general_advice": true
+  },
+  "kava": {
+   "url": "https://www.nccih.nih.gov/health/kava",
+   "title": "Kava: Usefulness and Safety",
+   "updated": "April 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "c62533bfbbb9e8aa1738f1eaa6df20a6aeaff2e696c9fcbe47edef3dccdb75e9",
+   "common_names": [
+    "kava",
+    "kava kava",
+    "awa",
+    "ava pepper",
+    "ava root",
+    "kawa"
+   ],
+   "latin_names": [
+    "Piper methysticum"
+   ],
+   "general_advice": true
+  },
+  "green-tea": {
+   "url": "https://www.nccih.nih.gov/health/green-tea",
+   "title": "Green Tea: Usefulness and Safety",
+   "updated": "February 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "1ce0b079cd223215a4a202689301679e0cf3867ccb670ff64877da7a3d6e5864",
+   "common_names": [
+    "green tea"
+   ],
+   "latin_names": [
+    "Camellia sinensis"
+   ],
+   "general_advice": true
+  },
+  "asian-ginseng": {
+   "url": "https://www.nccih.nih.gov/health/asian-ginseng",
+   "title": "Asian Ginseng: Usefulness and Safety",
+   "updated": "February 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "2cec46fce25de1047454860bc417d388528f609c632e441392eea87fd1c24682",
+   "common_names": [
+    "Asian ginseng",
+    "Chinese ginseng",
+    "Korean ginseng",
+    "red ginseng",
+    "white ginseng",
+    "ginseng root"
+   ],
+   "latin_names": [
+    "Panax ginseng"
+   ],
+   "general_advice": true
+  },
+  "turmeric": {
+   "url": "https://www.nccih.nih.gov/health/turmeric",
+   "title": "Turmeric: Usefulness and Safety",
+   "updated": "April 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "863293eda0f8ad1f45314a5eff478aca39f7727cad7f6e06f7402449e05dbf16",
+   "common_names": [
+    "turmeric",
+    "turmeric root",
+    "Indian saffron"
+   ],
+   "latin_names": [
+    "Curcuma longa",
+    "Curcuma domestica",
+    "Curcuma aromatica"
+   ],
+   "general_advice": true
+  },
+  "valerian": {
+   "url": "https://www.nccih.nih.gov/health/valerian",
+   "title": "Valerian: Usefulness and Safety",
+   "updated": "May 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "0c901618320e2a55aec75b7b5afc9f30128740fd4be3a1d800ad753584ba3c65",
+   "common_names": [
+    "valerian",
+    "all-heal",
+    "garden heliotrope"
+   ],
+   "latin_names": [
+    "Valeriana officinalis"
+   ],
+   "general_advice": true
+  },
+  "ashwagandha": {
+   "url": "https://www.nccih.nih.gov/health/ashwagandha",
+   "title": "Ashwagandha: Usefulness and Safety",
+   "updated": "March 2023",
+   "retrieved": "2026-11-12",
+   "text_sha256": "d2020d44ed41b2b05904cf90475a307d7eeb0f35acb30ad79f8dd984e12aeb61",
+   "common_names": [
+    "ashwagandha",
+    "Indian ginseng"
+   ],
+   "latin_names": [
+    "Withania somnifera"
+   ],
+   "general_advice": false
+  },
+  "echinacea": {
+   "url": "https://www.nccih.nih.gov/health/echinacea",
+   "title": "Echinacea: Usefulness and Safety",
+   "updated": "November 2024",
+   "retrieved": "2026-11-12",
+   "text_sha256": "a8edc5be6b490b2511ebc98b2d84387b932196a1c09d7592cdebcf71e7b89738",
+   "common_names": [
+    "echinacea",
+    "purple coneflower",
+    "coneflower",
+    "American coneflower"
+   ],
+   "latin_names": [
+    "Echinacea purpurea",
+    "Echinacea angustifolia",
+    "Echinacea pallida"
+   ],
+   "general_advice": true
+  },
+  "black-cohosh": {
+   "url": "https://www.nccih.nih.gov/health/black-cohosh",
+   "title": "Black Cohosh: Usefulness and Safety",
+   "updated": "November 2024",
+   "retrieved": "2026-11-12",
+   "text_sha256": "7ca9eb61cd4b5d955c24d4e07f7bfcb2a9638bb79a6e999143514da27f026bf1",
+   "common_names": [
+    "black cohosh",
+    "black snakeroot",
+    "macrotys",
+    "bugbane",
+    "bugwort",
+    "rattleroot",
+    "rattleweed"
+   ],
+   "latin_names": [
+    "Actaea racemosa",
+    "Cimicifuga racemosa"
+   ],
+   "general_advice": true
+  },
+  "bitter-orange": {
+   "url": "https://www.nccih.nih.gov/health/bitter-orange",
+   "title": "Bitter Orange: Usefulness and Safety",
+   "updated": "November 2024",
+   "retrieved": "2026-11-12",
+   "text_sha256": "81c067a2c6ee65e625cbc1936edaaee141a95c4f16920d4b16a6f52413b5674e",
+   "common_names": [
+    "bitter orange",
+    "Seville orange",
+    "sour orange",
+    "zhi shi"
+   ],
+   "latin_names": [
+    "Citrus aurantium"
+   ],
+   "general_advice": true
+  },
+  "yohimbe": {
+   "url": "https://www.nccih.nih.gov/health/yohimbe",
+   "title": "Yohimbe: Usefulness and Safety",
+   "updated": "May 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "cc3a98038e067342a61677045d96c330e3c2605711b1bb2c9f8700c791af6ffa",
+   "common_names": [
+    "yohimbe",
+    "johimbi"
+   ],
+   "latin_names": [
+    "Pausinystalia yohimbe"
+   ],
+   "general_advice": true
+  },
+  "milk-thistle": {
+   "url": "https://www.nccih.nih.gov/health/milk-thistle",
+   "title": "Milk Thistle: Usefulness and Safety",
+   "updated": "February 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "7ff023833dc4137a6fe09d1bfae6f1e3fc1a6d3079d79e95086ca3a472fdd573",
+   "common_names": [
+    "milk thistle",
+    "Mary thistle",
+    "holy thistle"
+   ],
+   "latin_names": [
+    "Silybum marianum",
+    "Carduus marianus"
+   ],
+   "general_advice": true
+  },
+  "ginger": {
+   "url": "https://www.nccih.nih.gov/health/ginger",
+   "title": "Ginger: Usefulness and Safety",
+   "updated": "February 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "7b8b27da2c6d433ed74e41bc80d63b1d77dbd8fbe338dbc63d9ab8f10495422d",
+   "common_names": [
+    "ginger"
+   ],
+   "latin_names": [
+    "Zingiber officinale"
+   ],
+   "general_advice": true
+  },
+  "chamomile": {
+   "url": "https://www.nccih.nih.gov/health/chamomile",
+   "title": "Chamomile: Usefulness and Safety",
+   "updated": "November 2024",
+   "retrieved": "2026-11-12",
+   "text_sha256": "0fff28ef745ab0ccb8c2a8faf96cdca5086c52d7aedaee7ddee75b3a147399ef",
+   "common_names": [
+    "chamomile",
+    "German chamomile"
+   ],
+   "latin_names": [
+    "Matricaria recutita",
+    "Chamomilla recutita",
+    "Matricaria chamomilla"
+   ],
+   "general_advice": true
+  },
+  "hawthorn": {
+   "url": "https://www.nccih.nih.gov/health/hawthorn",
+   "title": "Hawthorn: Usefulness and Safety",
+   "updated": "April 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "e46d4c114912a5f1990b1c33d3f88c98159cf7a2e865137176d72ecd758384cd",
+   "common_names": [
+    "hawthorn",
+    "hawthorne",
+    "harthorne",
+    "English hawthorn",
+    "Mexican hawthorn",
+    "raiz de tejocote",
+    "tejocote",
+    "shanzha",
+    "WS 1442"
+   ],
+   "latin_names": [
+    "Crataegus monogyna",
+    "Crataegus mexicana",
+    "Crataegus pinnatifida",
+    "Crataegus oxycantha",
+    "Crataegus laevigata"
+   ],
+   "general_advice": true
+  },
+  "fenugreek": {
+   "url": "https://www.nccih.nih.gov/health/fenugreek",
+   "title": "Fenugreek: Usefulness and Safety",
+   "updated": "February 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "edfaaabcb0da16f8d661a82d5fec953080d5e70a1b7f85b19d13000f49bef284",
+   "common_names": [
+    "fenugreek"
+   ],
+   "latin_names": [
+    "Trigonella foenum-graecum"
+   ],
+   "general_advice": true
+  },
+  "cranberry": {
+   "url": "https://www.nccih.nih.gov/health/cranberry",
+   "title": "Cranberry: Usefulness and Safety",
+   "updated": "November 2024",
+   "retrieved": "2026-11-12",
+   "text_sha256": "4f1c32558bf571950ea89ee211c50e729bd66d9de5b1695403e91eee382cfc2a",
+   "common_names": [
+    "cranberry",
+    "American cranberry",
+    "bearberry"
+   ],
+   "latin_names": [
+    "Vaccinium macrocarpon",
+    "Oxycoccus macrocarpos",
+    "Vaccinium oxycoccos"
+   ],
+   "general_advice": true
+  },
+  "passionflower": {
+   "url": "https://www.nccih.nih.gov/health/passionflower",
+   "title": "Passionflower: Usefulness and Safety",
+   "updated": "April 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "ee5172a09108721ac8ca67036f0d7a16d4eed5ad57051001de3f9a6fb9de1264",
+   "common_names": [
+    "passionflower",
+    "maypop",
+    "apricot vine",
+    "maracuja",
+    "water lemon"
+   ],
+   "latin_names": [
+    "Passiflora incarnata"
+   ],
+   "general_advice": true
+  },
+  "peppermint-oil": {
+   "url": "https://www.nccih.nih.gov/health/peppermint-oil",
+   "title": "Peppermint Oil: Usefulness and Safety",
+   "updated": "May 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "7f706feacc302fdcf1da03cf4eb5023a2a9abd815e9cdcea8448a0c17b76a35a",
+   "common_names": [
+    "peppermint",
+    "peppermint oil"
+   ],
+   "latin_names": [
+    "Mentha x piperita"
+   ],
+   "general_advice": true
+  },
+  "saw-palmetto": {
+   "url": "https://www.nccih.nih.gov/health/saw-palmetto",
+   "title": "Saw Palmetto: Usefulness and Safety",
+   "updated": "April 2025",
+   "retrieved": "2026-11-12",
+   "text_sha256": "f4313d969b8d1829f1c888103d44af920ffcc59dc70b70a7eccc1209a68dbd38",
+   "common_names": [
+    "saw palmetto",
+    "American dwarf palm tree",
+    "cabbage palm"
+   ],
+   "latin_names": [
+    "Serenoa repens",
+    "Serenoa serrulata",
+    "Sabal serrulata"
+   ],
+   "general_advice": true
+  }
+ },
+ "conditions": {
+  "pregnancy": "Pregnant, trying to conceive or breastfeeding",
+  "surgery": "Surgery or a procedure planned",
+  "diabetes": "Diabetes or blood-sugar problems",
+  "heart_bp_kidney": "High blood pressure, heart or kidney condition",
+  "liver": "Liver condition",
+  "autoimmune_thyroid": "Autoimmune or thyroid condition",
+  "ragweed": "Allergic to ragweed, daisies or marigolds",
+  "hormone_sensitive": "Hormone-sensitive condition (e.g. breast, uterine or prostate cancer)"
+ },
+ "class_labels": {
+  "warfarin": "warfarin",
+  "anticoagulant": "an anticoagulant (blood thinner)",
+  "bleeding": "a medicine that affects bleeding",
+  "aspirin": "aspirin",
+  "oral_contraceptive": "birth control pills",
+  "cyclosporine": "cyclosporine",
+  "immunosuppressant": "an immunosuppressant",
+  "sjw_antidepressant": "an antidepressant NIH names",
+  "serotonergic": "a medicine that affects serotonin",
+  "tca": "a tricyclic antidepressant",
+  "maoi": "an MAO inhibitor antidepressant",
+  "sjw_anticonvulsant": "a seizure medicine NIH names",
+  "anticonvulsant": "an anti-seizure medicine",
+  "digoxin": "digoxin",
+  "ivabradine": "ivabradine",
+  "hiv": "an HIV medicine",
+  "sjw_cancer": "a cancer medicine NIH names",
+  "statin": "a statin",
+  "simvastatin": "simvastatin",
+  "atorvastatin": "atorvastatin",
+  "metformin": "metformin",
+  "diabetes_med": "a diabetes medicine",
+  "bp_med": "a blood-pressure medicine",
+  "nadolol": "nadolol",
+  "corticosteroid": "a corticosteroid",
+  "benzodiazepine": "a benzodiazepine",
+  "sedative": "a sedative",
+  "thyroid_hormone": "a thyroid hormone medicine",
+  "raloxifene": "raloxifene"
+ },
+ "medicines": [
+  {
+   "name": "warfarin",
+   "aliases": [
+    "coumadin",
+    "jantoven"
+   ],
+   "classes": [
+    "warfarin",
+    "anticoagulant",
+    "bleeding"
+   ]
+  },
+  {
+   "name": "apixaban",
+   "aliases": [
+    "eliquis"
+   ],
+   "classes": [
+    "anticoagulant",
+    "bleeding"
+   ]
+  },
+  {
+   "name": "rivaroxaban",
+   "aliases": [
+    "xarelto"
+   ],
+   "classes": [
+    "anticoagulant",
+    "bleeding"
+   ]
+  },
+  {
+   "name": "dabigatran",
+   "aliases": [
+    "pradaxa"
+   ],
+   "classes": [
+    "anticoagulant",
+    "bleeding"
+   ]
+  },
+  {
+   "name": "edoxaban",
+   "aliases": [
+    "savaysa"
+   ],
+   "classes": [
+    "anticoagulant",
+    "bleeding"
+   ]
+  },
+  {
+   "name": "heparin",
+   "aliases": [],
+   "classes": [
+    "anticoagulant",
+    "bleeding"
+   ]
+  },
+  {
+   "name": "enoxaparin",
+   "aliases": [
+    "lovenox"
+   ],
+   "classes": [
+    "anticoagulant",
+    "bleeding"
+   ]
+  },
+  {
+   "name": "aspirin",
+   "aliases": [
+    "acetylsalicylic acid",
+    "baby aspirin",
+    "ecotrin",
+    "bayer aspirin"
+   ],
+   "classes": [
+    "aspirin",
+    "bleeding"
+   ]
+  },
+  {
+   "name": "clopidogrel",
+   "aliases": [
+    "plavix"
+   ],
+   "classes": [
+    "bleeding"
+   ]
+  },
+  {
+   "name": "prasugrel",
+   "aliases": [
+    "effient"
+   ],
+   "classes": [
+    "bleeding"
+   ]
+  },
+  {
+   "name": "ticagrelor",
+   "aliases": [
+    "brilinta"
+   ],
+   "classes": [
+    "bleeding"
+   ]
+  },
+  {
+   "name": "birth control pill",
+   "aliases": [
+    "the pill",
+    "oral contraceptive",
+    "combined pill",
+    "ethinyl estradiol",
+    "levonorgestrel",
+    "norethindrone",
+    "norgestimate",
+    "desogestrel",
+    "drospirenone",
+    "yaz",
+    "yasmin",
+    "loestrin",
+    "sprintec",
+    "ortho tri-cyclen",
+    "slynd",
+    "seasonique",
+    "lo loestrin"
+   ],
+   "classes": [
+    "oral_contraceptive"
+   ]
+  },
+  {
+   "name": "cyclosporine",
+   "aliases": [
+    "ciclosporin",
+    "neoral",
+    "sandimmune",
+    "gengraf"
+   ],
+   "classes": [
+    "cyclosporine",
+    "immunosuppressant"
+   ]
+  },
+  {
+   "name": "tacrolimus",
+   "aliases": [
+    "prograf",
+    "envarsus",
+    "astagraf"
+   ],
+   "classes": [
+    "immunosuppressant"
+   ]
+  },
+  {
+   "name": "mycophenolate",
+   "aliases": [
+    "cellcept",
+    "myfortic"
+   ],
+   "classes": [
+    "immunosuppressant"
+   ]
+  },
+  {
+   "name": "azathioprine",
+   "aliases": [
+    "imuran"
+   ],
+   "classes": [
+    "immunosuppressant"
+   ]
+  },
+  {
+   "name": "sirolimus",
+   "aliases": [
+    "rapamune"
+   ],
+   "classes": [
+    "immunosuppressant"
+   ]
+  },
+  {
+   "name": "everolimus",
+   "aliases": [
+    "zortress"
+   ],
+   "classes": [
+    "immunosuppressant"
+   ]
+  },
+  {
+   "name": "amitriptyline",
+   "aliases": [
+    "elavil"
+   ],
+   "classes": [
+    "sjw_antidepressant",
+    "tca",
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "bupropion",
+   "aliases": [
+    "wellbutrin",
+    "zyban"
+   ],
+   "classes": [
+    "sjw_antidepressant"
+   ]
+  },
+  {
+   "name": "nortriptyline",
+   "aliases": [
+    "pamelor"
+   ],
+   "classes": [
+    "tca",
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "imipramine",
+   "aliases": [
+    "tofranil"
+   ],
+   "classes": [
+    "tca",
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "doxepin",
+   "aliases": [
+    "silenor"
+   ],
+   "classes": [
+    "tca",
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "clomipramine",
+   "aliases": [
+    "anafranil"
+   ],
+   "classes": [
+    "tca",
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "desipramine",
+   "aliases": [
+    "norpramin"
+   ],
+   "classes": [
+    "tca",
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "sertraline",
+   "aliases": [
+    "zoloft"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "fluoxetine",
+   "aliases": [
+    "prozac"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "escitalopram",
+   "aliases": [
+    "lexapro"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "citalopram",
+   "aliases": [
+    "celexa"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "paroxetine",
+   "aliases": [
+    "paxil"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "fluvoxamine",
+   "aliases": [
+    "luvox"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "venlafaxine",
+   "aliases": [
+    "effexor"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "desvenlafaxine",
+   "aliases": [
+    "pristiq"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "duloxetine",
+   "aliases": [
+    "cymbalta"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "trazodone",
+   "aliases": [
+    "desyrel"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "vortioxetine",
+   "aliases": [
+    "trintellix"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "tramadol",
+   "aliases": [
+    "ultram"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "sumatriptan",
+   "aliases": [
+    "imitrex"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "rizatriptan",
+   "aliases": [
+    "maxalt"
+   ],
+   "classes": [
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "phenelzine",
+   "aliases": [
+    "nardil"
+   ],
+   "classes": [
+    "maoi",
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "tranylcypromine",
+   "aliases": [
+    "parnate"
+   ],
+   "classes": [
+    "maoi",
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "isocarboxazid",
+   "aliases": [
+    "marplan"
+   ],
+   "classes": [
+    "maoi",
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "selegiline",
+   "aliases": [
+    "emsam",
+    "eldepryl"
+   ],
+   "classes": [
+    "maoi",
+    "serotonergic"
+   ]
+  },
+  {
+   "name": "phenytoin",
+   "aliases": [
+    "dilantin"
+   ],
+   "classes": [
+    "sjw_anticonvulsant",
+    "anticonvulsant"
+   ]
+  },
+  {
+   "name": "carbamazepine",
+   "aliases": [
+    "tegretol"
+   ],
+   "classes": [
+    "sjw_anticonvulsant",
+    "anticonvulsant"
+   ]
+  },
+  {
+   "name": "levetiracetam",
+   "aliases": [
+    "keppra"
+   ],
+   "classes": [
+    "anticonvulsant"
+   ]
+  },
+  {
+   "name": "lamotrigine",
+   "aliases": [
+    "lamictal"
+   ],
+   "classes": [
+    "anticonvulsant"
+   ]
+  },
+  {
+   "name": "valproate",
+   "aliases": [
+    "valproic acid",
+    "divalproex",
+    "depakote"
+   ],
+   "classes": [
+    "anticonvulsant"
+   ]
+  },
+  {
+   "name": "topiramate",
+   "aliases": [
+    "topamax"
+   ],
+   "classes": [
+    "anticonvulsant"
+   ]
+  },
+  {
+   "name": "oxcarbazepine",
+   "aliases": [
+    "trileptal"
+   ],
+   "classes": [
+    "anticonvulsant"
+   ]
+  },
+  {
+   "name": "lacosamide",
+   "aliases": [
+    "vimpat"
+   ],
+   "classes": [
+    "anticonvulsant"
+   ]
+  },
+  {
+   "name": "phenobarbital",
+   "aliases": [],
+   "classes": [
+    "anticonvulsant",
+    "sedative"
+   ]
+  },
+  {
+   "name": "digoxin",
+   "aliases": [
+    "lanoxin"
+   ],
+   "classes": [
+    "digoxin"
+   ]
+  },
+  {
+   "name": "ivabradine",
+   "aliases": [
+    "corlanor"
+   ],
+   "classes": [
+    "ivabradine"
+   ]
+  },
+  {
+   "name": "indinavir",
+   "aliases": [
+    "crixivan"
+   ],
+   "classes": [
+    "hiv"
+   ]
+  },
+  {
+   "name": "nevirapine",
+   "aliases": [
+    "viramune"
+   ],
+   "classes": [
+    "hiv"
+   ]
+  },
+  {
+   "name": "ritonavir",
+   "aliases": [
+    "norvir"
+   ],
+   "classes": [
+    "hiv"
+   ]
+  },
+  {
+   "name": "darunavir",
+   "aliases": [
+    "prezista"
+   ],
+   "classes": [
+    "hiv"
+   ]
+  },
+  {
+   "name": "atazanavir",
+   "aliases": [
+    "reyataz"
+   ],
+   "classes": [
+    "hiv"
+   ]
+  },
+  {
+   "name": "efavirenz",
+   "aliases": [
+    "sustiva"
+   ],
+   "classes": [
+    "hiv"
+   ]
+  },
+  {
+   "name": "rilpivirine",
+   "aliases": [
+    "edurant"
+   ],
+   "classes": [
+    "hiv"
+   ]
+  },
+  {
+   "name": "lopinavir",
+   "aliases": [
+    "kaletra"
+   ],
+   "classes": [
+    "hiv"
+   ]
+  },
+  {
+   "name": "irinotecan",
+   "aliases": [
+    "camptosar"
+   ],
+   "classes": [
+    "sjw_cancer"
+   ]
+  },
+  {
+   "name": "imatinib",
+   "aliases": [
+    "gleevec"
+   ],
+   "classes": [
+    "sjw_cancer"
+   ]
+  },
+  {
+   "name": "docetaxel",
+   "aliases": [
+    "taxotere"
+   ],
+   "classes": [
+    "sjw_cancer"
+   ]
+  },
+  {
+   "name": "simvastatin",
+   "aliases": [
+    "zocor"
+   ],
+   "classes": [
+    "statin",
+    "simvastatin"
+   ]
+  },
+  {
+   "name": "atorvastatin",
+   "aliases": [
+    "lipitor"
+   ],
+   "classes": [
+    "statin",
+    "atorvastatin"
+   ]
+  },
+  {
+   "name": "rosuvastatin",
+   "aliases": [
+    "crestor"
+   ],
+   "classes": [
+    "statin"
+   ]
+  },
+  {
+   "name": "pravastatin",
+   "aliases": [
+    "pravachol"
+   ],
+   "classes": [
+    "statin"
+   ]
+  },
+  {
+   "name": "lovastatin",
+   "aliases": [
+    "mevacor",
+    "altoprev"
+   ],
+   "classes": [
+    "statin"
+   ]
+  },
+  {
+   "name": "pitavastatin",
+   "aliases": [
+    "livalo"
+   ],
+   "classes": [
+    "statin"
+   ]
+  },
+  {
+   "name": "fluvastatin",
+   "aliases": [
+    "lescol"
+   ],
+   "classes": [
+    "statin"
+   ]
+  },
+  {
+   "name": "metformin",
+   "aliases": [
+    "glucophage",
+    "glumetza",
+    "fortamet"
+   ],
+   "classes": [
+    "metformin",
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "insulin",
+   "aliases": [
+    "lantus",
+    "humalog",
+    "novolog",
+    "levemir",
+    "tresiba",
+    "basaglar",
+    "humulin",
+    "novolin",
+    "toujeo"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "glipizide",
+   "aliases": [
+    "glucotrol"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "glyburide",
+   "aliases": [
+    "glynase",
+    "diabeta"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "glimepiride",
+   "aliases": [
+    "amaryl"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "sitagliptin",
+   "aliases": [
+    "januvia"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "linagliptin",
+   "aliases": [
+    "tradjenta"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "empagliflozin",
+   "aliases": [
+    "jardiance"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "dapagliflozin",
+   "aliases": [
+    "farxiga"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "canagliflozin",
+   "aliases": [
+    "invokana"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "semaglutide",
+   "aliases": [
+    "ozempic",
+    "rybelsus",
+    "wegovy"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "liraglutide",
+   "aliases": [
+    "victoza"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "dulaglutide",
+   "aliases": [
+    "trulicity"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "tirzepatide",
+   "aliases": [
+    "mounjaro",
+    "zepbound"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "pioglitazone",
+   "aliases": [
+    "actos"
+   ],
+   "classes": [
+    "diabetes_med"
+   ]
+  },
+  {
+   "name": "lisinopril",
+   "aliases": [
+    "zestril",
+    "prinivil"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "enalapril",
+   "aliases": [
+    "vasotec"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "ramipril",
+   "aliases": [
+    "altace"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "benazepril",
+   "aliases": [
+    "lotensin"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "losartan",
+   "aliases": [
+    "cozaar"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "valsartan",
+   "aliases": [
+    "diovan"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "olmesartan",
+   "aliases": [
+    "benicar"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "irbesartan",
+   "aliases": [
+    "avapro"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "telmisartan",
+   "aliases": [
+    "micardis"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "amlodipine",
+   "aliases": [
+    "norvasc"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "nifedipine",
+   "aliases": [
+    "procardia",
+    "adalat"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "diltiazem",
+   "aliases": [
+    "cardizem"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "verapamil",
+   "aliases": [
+    "calan"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "metoprolol",
+   "aliases": [
+    "lopressor",
+    "toprol"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "atenolol",
+   "aliases": [
+    "tenormin"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "carvedilol",
+   "aliases": [
+    "coreg"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "propranolol",
+   "aliases": [
+    "inderal"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "bisoprolol",
+   "aliases": [
+    "zebeta"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "nadolol",
+   "aliases": [
+    "corgard"
+   ],
+   "classes": [
+    "bp_med",
+    "nadolol"
+   ]
+  },
+  {
+   "name": "hydrochlorothiazide",
+   "aliases": [
+    "hctz",
+    "microzide"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "chlorthalidone",
+   "aliases": [
+    "thalitone"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "furosemide",
+   "aliases": [
+    "lasix"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "spironolactone",
+   "aliases": [
+    "aldactone"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "clonidine",
+   "aliases": [
+    "catapres"
+   ],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "hydralazine",
+   "aliases": [],
+   "classes": [
+    "bp_med"
+   ]
+  },
+  {
+   "name": "prednisone",
+   "aliases": [
+    "deltasone",
+    "rayos"
+   ],
+   "classes": [
+    "corticosteroid"
+   ]
+  },
+  {
+   "name": "prednisolone",
+   "aliases": [
+    "orapred",
+    "millipred"
+   ],
+   "classes": [
+    "corticosteroid"
+   ]
+  },
+  {
+   "name": "methylprednisolone",
+   "aliases": [
+    "medrol",
+    "solu-medrol"
+   ],
+   "classes": [
+    "corticosteroid"
+   ]
+  },
+  {
+   "name": "dexamethasone",
+   "aliases": [
+    "decadron"
+   ],
+   "classes": [
+    "corticosteroid"
+   ]
+  },
+  {
+   "name": "hydrocortisone",
+   "aliases": [
+    "cortef"
+   ],
+   "classes": [
+    "corticosteroid"
+   ]
+  },
+  {
+   "name": "fludrocortisone",
+   "aliases": [
+    "florinef"
+   ],
+   "classes": [
+    "corticosteroid"
+   ]
+  },
+  {
+   "name": "budesonide",
+   "aliases": [
+    "entocort",
+    "uceris"
+   ],
+   "classes": [
+    "corticosteroid"
+   ]
+  },
+  {
+   "name": "alprazolam",
+   "aliases": [
+    "xanax"
+   ],
+   "classes": [
+    "benzodiazepine",
+    "sedative"
+   ]
+  },
+  {
+   "name": "lorazepam",
+   "aliases": [
+    "ativan"
+   ],
+   "classes": [
+    "benzodiazepine",
+    "sedative"
+   ]
+  },
+  {
+   "name": "diazepam",
+   "aliases": [
+    "valium"
+   ],
+   "classes": [
+    "benzodiazepine",
+    "sedative"
+   ]
+  },
+  {
+   "name": "clonazepam",
+   "aliases": [
+    "klonopin"
+   ],
+   "classes": [
+    "benzodiazepine",
+    "sedative",
+    "anticonvulsant"
+   ]
+  },
+  {
+   "name": "temazepam",
+   "aliases": [
+    "restoril"
+   ],
+   "classes": [
+    "benzodiazepine",
+    "sedative"
+   ]
+  },
+  {
+   "name": "triazolam",
+   "aliases": [
+    "halcion"
+   ],
+   "classes": [
+    "benzodiazepine",
+    "sedative"
+   ]
+  },
+  {
+   "name": "chlordiazepoxide",
+   "aliases": [
+    "librium"
+   ],
+   "classes": [
+    "benzodiazepine",
+    "sedative"
+   ]
+  },
+  {
+   "name": "zolpidem",
+   "aliases": [
+    "ambien",
+    "edluar",
+    "intermezzo"
+   ],
+   "classes": [
+    "sedative"
+   ]
+  },
+  {
+   "name": "eszopiclone",
+   "aliases": [
+    "lunesta"
+   ],
+   "classes": [
+    "sedative"
+   ]
+  },
+  {
+   "name": "zaleplon",
+   "aliases": [
+    "sonata"
+   ],
+   "classes": [
+    "sedative"
+   ]
+  },
+  {
+   "name": "suvorexant",
+   "aliases": [
+    "belsomra"
+   ],
+   "classes": [
+    "sedative"
+   ]
+  },
+  {
+   "name": "levothyroxine",
+   "aliases": [
+    "synthroid",
+    "levoxyl",
+    "unithroid",
+    "euthyrox",
+    "tirosint"
+   ],
+   "classes": [
+    "thyroid_hormone"
+   ]
+  },
+  {
+   "name": "liothyronine",
+   "aliases": [
+    "cytomel"
+   ],
+   "classes": [
+    "thyroid_hormone"
+   ]
+  },
+  {
+   "name": "thyroid desiccated",
+   "aliases": [
+    "armour thyroid",
+    "np thyroid"
+   ],
+   "classes": [
+    "thyroid_hormone"
+   ]
+  },
+  {
+   "name": "raloxifene",
+   "aliases": [
+    "evista"
+   ],
+   "classes": [
+    "raloxifene"
+   ]
+  }
+ ],
+ "herbs": [
+  {
+   "id": "st-johns-wort",
+   "name": "St. John's wort",
+   "aliases": [
+    "hypericum perforatum",
+    "saint john's wort",
+    "saint johns wort",
+    "st. john's wort",
+    "st john's wort",
+    "st johns wort",
+    "klamath weed",
+    "hypericum",
+    "goatweed",
+    "st. john"
+   ],
+   "latin": [
+    "Hypericum perforatum"
+   ],
+   "identity_note": null,
+   "source": "st-johns-wort",
+   "variants": [],
+   "rules": [
+    {
+     "level": "discuss",
+     "meds": [
+      "sjw_antidepressant",
+      "oral_contraceptive",
+      "cyclosporine",
+      "sjw_anticonvulsant",
+      "digoxin",
+      "ivabradine",
+      "hiv",
+      "sjw_cancer",
+      "warfarin",
+      "simvastatin"
+     ],
+     "quote": "St. John’s wort can weaken the effects of many medicines, including crucially important medicines such as:",
+     "items": {
+      "sjw_antidepressant": "Some antidepressants, including amitriptyline and bupropion",
+      "oral_contraceptive": "Birth control pills",
+      "cyclosporine": "Cyclosporine, which prevents the body from rejecting transplanted organs",
+      "sjw_anticonvulsant": "Some drugs used to prevent seizures, including phenytoin and carbamazepine",
+      "digoxin": "Some heart medications, including digoxin and ivabradine",
+      "ivabradine": "Some heart medications, including digoxin and ivabradine",
+      "hiv": "Some HIV drugs, including indinavir and nevirapine",
+      "sjw_cancer": "Some cancer medications, including irinotecan, imatinib, and docetaxel",
+      "warfarin": "Warfarin, an anticoagulant (blood thinner)",
+      "simvastatin": "Certain statins, including simvastatin"
+     },
+     "effect": "may weaken the medicine"
+    },
+    {
+     "level": "discuss",
+     "meds": [
+      "serotonergic"
+     ],
+     "quote": "taking St. John’s wort with certain antidepressants or other drugs that affect serotonin (a substance produced by some nerve cells) may lead to increased serotonin-related side effects, which can be serious.",
+     "effect": "serotonin-related side effects"
+    },
+    {
+     "level": "discuss",
+     "always": true,
+     "quote": "St. John’s wort can interact in dangerous, sometimes life-threatening ways with a variety of medicines.",
+     "effect": "interacts with many medicines"
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "pregnancy"
+     ],
+     "quote": "It may be unsafe to use St. John’s wort during pregnancy because it may increase the risk of birth defects."
+    }
+   ]
+  },
+  {
+   "id": "ginkgo",
+   "name": "Ginkgo",
+   "aliases": [
+    "japanese silver apricot",
+    "maidenhair tree",
+    "ginkgo biloba",
+    "fossil tree",
+    "ginkgo",
+    "gingko"
+   ],
+   "latin": [
+    "Ginkgo biloba"
+   ],
+   "identity_note": null,
+   "source": "ginkgo",
+   "variants": [],
+   "rules": [
+    {
+     "level": "discuss",
+     "meds": [
+      "anticoagulant"
+     ],
+     "quote": "Ginkgo may increase the risk of bleeding in people who are taking anticoagulant drugs, such as warfarin.",
+     "effect": "bleeding risk"
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "pregnancy"
+     ],
+     "quote": "It might cause early labor or extra bleeding during delivery if used near that time."
+    }
+   ]
+  },
+  {
+   "id": "goldenseal",
+   "name": "Goldenseal",
+   "aliases": [
+    "hydrastis canadensis",
+    "yellow pucoon",
+    "golden seal",
+    "goldenseal",
+    "hydrastis"
+   ],
+   "latin": [
+    "Hydrastis canadensis"
+   ],
+   "identity_note": null,
+   "source": "goldenseal",
+   "variants": [],
+   "rules": [
+    {
+     "level": "discuss",
+     "meds": [
+      "metformin"
+     ],
+     "quote": "For example, a study funded by the National Center for Complementary and Integrative Health (NCCIH) found that levels of metformin—the most commonly prescribed diabetes medicine—decreased about 25 percent in healthy adults who were given goldenseal extract plus metformin. This drop was enough to potentially hinder glucose control in people with type 2 diabetes taking metformin.",
+     "effect": "may lower metformin levels"
+    },
+    {
+     "level": "discuss",
+     "always": true,
+     "quote": "Goldenseal may change the way your body processes many medications.",
+     "effect": "changes how many medicines are processed"
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "pregnancy"
+     ],
+     "quote": "Women who are pregnant or breastfeeding should not use goldenseal, and it should not be given to infants."
+    },
+    {
+     "level": "note",
+     "quote": "Some commercial goldenseal products have been found to contain other herbs or ingredients not listed on the label in addition to or instead of goldenseal."
+    }
+   ]
+  },
+  {
+   "id": "red-yeast-rice",
+   "name": "Red yeast rice",
+   "aliases": [
+    "monascus purpureus",
+    "red yeast rice",
+    "red rice yeast",
+    "red mold rice",
+    "monacolin",
+    "monascus"
+   ],
+   "latin": [],
+   "identity_note": "Not a plant: a mold (Monascus purpureus) fermented on rice.",
+   "source": "red-yeast-rice",
+   "variants": [],
+   "rules": [
+    {
+     "level": "discuss",
+     "meds": [
+      "statin"
+     ],
+     "quote": "Monacolin K is structurally identical to the medicine lovastatin.",
+     "effect": "same compound as a statin drug"
+    },
+    {
+     "level": "discuss",
+     "meds": [
+      "statin"
+     ],
+     "quote": "Red yeast rice products can have the same types of drug interactions as statin drugs and therefore may interfere with certain medicines or increase the chance for side effects.",
+     "effect": "statin-type interactions"
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "pregnancy"
+     ],
+     "quote": "Red yeast rice products are not recommended for those who are pregnant or lactating."
+    },
+    {
+     "level": "note",
+     "quote": "Levels of monacolin K and lovastatin are not usually included on product labels."
+    }
+   ]
+  },
+  {
+   "id": "licorice",
+   "name": "Licorice root",
+   "aliases": [
+    "glycyrrhiza uralensis",
+    "glycyrrhiza inflata",
+    "glycyrrhiza glabra",
+    "chinese licorice",
+    "licorice root",
+    "glycyrrhizin",
+    "glycyrrhiza",
+    "liquorice",
+    "licorice",
+    "gan cao",
+    "gan zao"
+   ],
+   "latin": [
+    "Glycyrrhiza glabra",
+    "Glycyrrhiza uralensis",
+    "Glycyrrhiza inflata"
+   ],
+   "identity_note": null,
+   "source": "licorice-root",
+   "variants": [
+    {
+     "pattern": "deglycyrrhizinated|\\bdgl\\b",
+     "label": "Deglycyrrhizinated (DGL)",
+     "quote": "Oral licorice products that do not contain glycyrrhizin (deglycyrrhizinated licorice) might be safe for up to 4 months."
+    }
+   ],
+   "rules": [
+    {
+     "level": "discuss",
+     "meds": [
+      "corticosteroid"
+     ],
+     "quote": "Interactions between licorice and corticosteroids have been reported.",
+     "effect": "reported interaction"
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "heart_bp_kidney"
+     ],
+     "meds": [
+      "bp_med"
+     ],
+     "quote": "Even small amounts of glycyrrhizin from licorice root products have been linked to severe adverse effects in people who consume a lot of salt, in people with hypertension, and in people with heart or kidney conditions."
+    }
+   ]
+  },
+  {
+   "id": "garlic",
+   "name": "Garlic",
+   "aliases": [
+    "allium sativum",
+    "aged garlic",
+    "allicin",
+    "garlic"
+   ],
+   "latin": [
+    "Allium sativum"
+   ],
+   "identity_note": null,
+   "source": "garlic",
+   "variants": [],
+   "rules": [
+    {
+     "level": "discuss",
+     "meds": [
+      "bleeding"
+     ],
+     "quote": "Taking garlic supplements may increase the risk of bleeding. If you take garlic supplements, make sure to tell your health care providers. This is especially important if you are going to have surgery or if you take medicines, such as anticoagulants or aspirin, that may also affect bleeding.",
+     "effect": "bleeding risk"
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "surgery"
+     ],
+     "quote": "Taking garlic supplements may increase the risk of bleeding."
+    }
+   ]
+  },
+  {
+   "id": "kava",
+   "name": "Kava",
+   "aliases": [
+    "piper methysticum",
+    "kavalactones",
+    "kavalactone",
+    "ava pepper",
+    "kava kava",
+    "ava root",
+    "kava"
+   ],
+   "latin": [
+    "Piper methysticum"
+   ],
+   "identity_note": null,
+   "source": "kava",
+   "variants": [],
+   "rules": [
+    {
+     "level": "discuss",
+     "meds": [
+      "benzodiazepine",
+      "sedative"
+     ],
+     "quote": "Kava should not be used together with other substances that have sedative effects, such as benzodiazepines or alcohol.",
+     "effect": "added sedation"
+    },
+    {
+     "level": "caution",
+     "always": true,
+     "conditions": [
+      "liver"
+     ],
+     "quote": "Various kava products have been linked to rare cases of liver injury, some of which have been serious or even fatal."
+    }
+   ]
+  },
+  {
+   "id": "green-tea",
+   "name": "Green tea extract",
+   "aliases": [
+    "epigallocatechin gallate",
+    "camellia sinensis",
+    "green tea extract",
+    "epigallocatechin",
+    "green tea",
+    "egcg"
+   ],
+   "latin": [
+    "Camellia sinensis"
+   ],
+   "identity_note": null,
+   "source": "green-tea",
+   "variants": [],
+   "rules": [
+    {
+     "level": "discuss",
+     "meds": [
+      "nadolol"
+     ],
+     "quote": "Green tea at high doses has been shown to reduce blood levels and, therefore, the effectiveness of the drug nadolol, a beta-blocker used for high blood pressure and heart problems.",
+     "effect": "may lower nadolol levels"
+    },
+    {
+     "level": "discuss",
+     "meds": [
+      "atorvastatin"
+     ],
+     "quote": "Green tea extract can reduce blood levels of the cholesterol-lowering drug atorvastatin.",
+     "effect": "may lower atorvastatin levels"
+    },
+    {
+     "level": "discuss",
+     "meds": [
+      "raloxifene"
+     ],
+     "quote": "A study funded by the National Center for Complementary and Integrative Health showed an interaction between green tea and the drug raloxifene, which is used to treat osteoporosis.",
+     "effect": "reported interaction"
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "liver"
+     ],
+     "quote": "Although uncommon, liver injury has been reported in some people who used green tea products, primarily green tea extracts in tablet or capsule form."
+    }
+   ]
+  },
+  {
+   "id": "asian-ginseng",
+   "name": "Asian ginseng",
+   "aliases": [
+    "korean red ginseng",
+    "chinese ginseng",
+    "korean ginseng",
+    "panax ginseng",
+    "asian ginseng",
+    "white ginseng",
+    "red ginseng"
+   ],
+   "latin": [
+    "Panax ginseng"
+   ],
+   "identity_note": null,
+   "source": "asian-ginseng",
+   "variants": [],
+   "rules": [
+    {
+     "level": "caution",
+     "conditions": [
+      "diabetes"
+     ],
+     "meds": [
+      "diabetes_med"
+     ],
+     "quote": "If you have diabetes, consult your health care provider before using Asian ginseng."
+    },
+    {
+     "level": "caution",
+     "meds": [
+      "anticoagulant"
+     ],
+     "conditions": [
+      "autoimmune_thyroid"
+     ],
+     "quote": "Asian ginseng may worsen autoimmune disorders and interfere with blood clotting."
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "pregnancy"
+     ],
+     "quote": "Some studies of Asian ginseng suggest it may be unsafe when taken orally during pregnancy."
+    }
+   ]
+  },
+  {
+   "id": "turmeric",
+   "name": "Turmeric / curcumin",
+   "aliases": [
+    "curcuma domestica",
+    "curcuma aromatica",
+    "indian saffron",
+    "curcuma longa",
+    "turmeric root",
+    "curcuminoids",
+    "curcuminoid",
+    "curcumin",
+    "turmeric"
+   ],
+   "latin": [
+    "Curcuma longa",
+    "Curcuma domestica",
+    "Curcuma aromatica"
+   ],
+   "identity_note": null,
+   "source": "turmeric",
+   "variants": [
+    {
+     "pattern": "piperine|bioperine|black pepper|piper nigrum|phytosome|meriva|longvida|theracurmin|enhanced absorption|high absorption|bioavailab|nano",
+     "label": "Absorption-enhanced formulation",
+     "quote": "Highly bioavailable formulations of curcumin, which enhance the body’s ability to absorb the curcumin, may harm your liver.",
+     "level": "caution"
+    }
+   ],
+   "rules": [
+    {
+     "level": "caution",
+     "conditions": [
+      "liver"
+     ],
+     "quote": "Many curcumin products with increased bioavailability are on the market, and liver damage has been reported in some people who have consumed these bioavailable formulations."
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "pregnancy"
+     ],
+     "quote": "The use of turmeric supplements during pregnancy may be unsafe."
+    }
+   ]
+  },
+  {
+   "id": "valerian",
+   "name": "Valerian",
+   "aliases": [
+    "valeriana officinalis",
+    "garden heliotrope",
+    "valerian root",
+    "valerian"
+   ],
+   "latin": [
+    "Valeriana officinalis"
+   ],
+   "identity_note": null,
+   "source": "valerian",
+   "variants": [],
+   "rules": [
+    {
+     "level": "discuss",
+     "meds": [
+      "sedative"
+     ],
+     "quote": "Because it is possible (though not proven) that valerian might have a sleep-inducing effect, it should not be taken along with alcohol or sedatives.",
+     "effect": "added sedation"
+    }
+   ]
+  },
+  {
+   "id": "ashwagandha",
+   "name": "Ashwagandha",
+   "aliases": [
+    "withania somnifera",
+    "indian ginseng",
+    "winter cherry",
+    "ashwagandha",
+    "withania"
+   ],
+   "latin": [
+    "Withania somnifera"
+   ],
+   "identity_note": null,
+   "source": "ashwagandha",
+   "variants": [],
+   "rules": [
+    {
+     "level": "discuss",
+     "meds": [
+      "diabetes_med",
+      "bp_med",
+      "immunosuppressant",
+      "sedative",
+      "anticonvulsant",
+      "thyroid_hormone"
+     ],
+     "quote": "There is evidence that ashwagandha might interact with some medications, including those for diabetes and high blood pressure, medicines that decrease the immune system response (immunosuppressants), sedatives, anti-seizure medications (anticonvulsants), and thyroid hormone medications.",
+     "effect": "may interact"
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "surgery",
+      "autoimmune_thyroid"
+     ],
+     "quote": "Ashwagandha is not recommended for people who are about to have surgery, or for those who have autoimmune or thyroid disorders."
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "pregnancy"
+     ],
+     "quote": "Ashwagandha should be avoided during pregnancy and should not be used while breastfeeding."
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "liver"
+     ],
+     "quote": "Although it is rare, there have been a number of cases that link liver injury to ashwagandha supplements."
+    }
+   ]
+  },
+  {
+   "id": "echinacea",
+   "name": "Echinacea",
+   "aliases": [
+    "echinacea angustifolia",
+    "american coneflower",
+    "echinacea purpurea",
+    "purple coneflower",
+    "echinacea pallida",
+    "echinacea"
+   ],
+   "latin": [
+    "Echinacea purpurea",
+    "Echinacea angustifolia",
+    "Echinacea pallida"
+   ],
+   "identity_note": null,
+   "source": "echinacea",
+   "variants": [],
+   "rules": [
+    {
+     "level": "caution",
+     "meds": [
+      "immunosuppressant"
+     ],
+     "quote": "There is conflicting evidence about whether echinacea interacts with some drugs metabolized by the liver, and there are theoretical reasons to suspect that echinacea might interact with immunosuppressants or caffeine."
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "ragweed"
+     ],
+     "quote": "However, some people have allergic reactions to echinacea, which may be severe."
+    }
+   ]
+  },
+  {
+   "id": "black-cohosh",
+   "name": "Black cohosh",
+   "aliases": [
+    "cimicifuga racemosa",
+    "actaea racemosa",
+    "black snakeroot",
+    "black cohosh",
+    "rattleroot",
+    "rattleweed",
+    "cimicifuga",
+    "macrotys",
+    "bugbane",
+    "bugwort"
+   ],
+   "latin": [
+    "Actaea racemosa",
+    "Cimicifuga racemosa"
+   ],
+   "identity_note": null,
+   "source": "black-cohosh",
+   "variants": [],
+   "rules": [
+    {
+     "level": "caution",
+     "conditions": [
+      "liver"
+     ],
+     "quote": "Cases of liver damage—some very serious—have been reported in people taking products labeled as black cohosh."
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "pregnancy"
+     ],
+     "quote": "Black cohosh may not be safe for use during pregnancy or while breastfeeding."
+    },
+    {
+     "level": "note",
+     "quote": "Some commercial black cohosh products have been found to contain the wrong herb or to contain mixtures of black cohosh and other herbs that are not listed on the label."
+    }
+   ]
+  },
+  {
+   "id": "bitter-orange",
+   "name": "Bitter orange",
+   "aliases": [
+    "citrus aurantium",
+    "seville orange",
+    "bitter orange",
+    "p-synephrine",
+    "sour orange",
+    "synephrine",
+    "zhi shi"
+   ],
+   "latin": [
+    "Citrus aurantium"
+   ],
+   "identity_note": null,
+   "source": "bitter-orange",
+   "variants": [],
+   "rules": [
+    {
+     "level": "caution",
+     "conditions": [
+      "heart_bp_kidney"
+     ],
+     "meds": [
+      "bp_med"
+     ],
+     "quote": "Cases of serious medical events, including abnormal heart rhythms, heart attacks, and strokes, have been reported in people who had taken bitter orange products, but most of the products contained multiple ingredients rather than bitter orange alone."
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "pregnancy"
+     ],
+     "quote": "It may not be safe to use bitter orange during pregnancy or while breastfeeding, and data from animal experiments suggest that substances in bitter orange might decrease milk production."
+    },
+    {
+     "level": "note",
+     "quote": "Of 23 products with labels that stated the amount of synephrine in the product, only 5 contained amounts of synephrine close to that indicated on the label (between 80 and 120 percent of the stated amount)."
+    }
+   ]
+  },
+  {
+   "id": "yohimbe",
+   "name": "Yohimbe",
+   "aliases": [
+    "pausinystalia johimbe",
+    "pausinystalia yohimbe",
+    "corynanthe johimbe",
+    "pausinystalia",
+    "yohimbine",
+    "johimbi",
+    "yohimbe"
+   ],
+   "latin": [
+    "Pausinystalia yohimbe"
+   ],
+   "identity_note": null,
+   "source": "yohimbe",
+   "variants": [],
+   "rules": [
+    {
+     "level": "discuss",
+     "meds": [
+      "maoi",
+      "tca"
+     ],
+     "quote": "Do not use yohimbe if you are taking types of antidepressant medications called monoamine oxidase inhibitors or tricyclic antidepressants.",
+     "effect": "do not combine"
+    },
+    {
+     "level": "caution",
+     "always": true,
+     "conditions": [
+      "heart_bp_kidney"
+     ],
+     "quote": "Yohimbine, a component of yohimbe, has been associated with cardiac arrhythmia (irregular heartbeat), blood pressure problems, heart attacks, and seizures."
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "pregnancy"
+     ],
+     "quote": "It might be unsafe to use yohimbe orally (taken by mouth) during pregnancy or while breastfeeding."
+    }
+   ]
+  },
+  {
+   "id": "milk-thistle",
+   "name": "Milk thistle",
+   "aliases": [
+    "silybum marianum",
+    "carduus marianus",
+    "mary thistle",
+    "milk thistle",
+    "silibinin",
+    "silymarin",
+    "silybum"
+   ],
+   "latin": [
+    "Silybum marianum",
+    "Carduus marianus"
+   ],
+   "identity_note": null,
+   "source": "milk-thistle",
+   "variants": [],
+   "rules": [
+    {
+     "level": "caution",
+     "conditions": [
+      "ragweed"
+     ],
+     "quote": "Milk thistle may cause allergic reactions, particularly among people who are allergic to related plants (for example, ragweed, chrysanthemum, marigold, and daisy)."
+    },
+    {
+     "level": "note",
+     "quote": "Some products have been found to contain amounts of silymarin substantially different from what’s stated on the label or to be contaminated with pesticides, microorganisms, or mycotoxins (harmful substances produced by molds or other fungi)."
+    }
+   ]
+  },
+  {
+   "id": "ginger",
+   "name": "Ginger",
+   "aliases": [
+    "zingiber officinale",
+    "ginger root",
+    "zingiber",
+    "ginger"
+   ],
+   "latin": [
+    "Zingiber officinale"
+   ],
+   "identity_note": null,
+   "source": "ginger",
+   "variants": [],
+   "rules": []
+  },
+  {
+   "id": "chamomile",
+   "name": "Chamomile",
+   "aliases": [
+    "matricaria chamomilla",
+    "chamomilla recutita",
+    "matricaria recutita",
+    "german chamomile",
+    "matricaria",
+    "camomile"
+   ],
+   "latin": [
+    "Matricaria recutita",
+    "Chamomilla recutita",
+    "Matricaria chamomilla"
+   ],
+   "identity_note": null,
+   "source": "chamomile",
+   "variants": [],
+   "rules": [
+    {
+     "level": "discuss",
+     "meds": [
+      "warfarin"
+     ],
+     "quote": "Interactions between chamomile and some drugs metabolized by the liver and warfarin (a blood thinner) have been reported, and there are theoretical reasons to suspect that chamomile might interact with other drugs as well, such as sedatives.",
+     "effect": "reported interaction"
+    },
+    {
+     "level": "caution",
+     "meds": [
+      "oral_contraceptive"
+     ],
+     "quote": "Preliminary studies suggest that taking chamomile along with birth control pills might decrease the effects of birth control pills."
+    },
+    {
+     "level": "caution",
+     "meds": [
+      "sedative"
+     ],
+     "quote": "Interactions between chamomile and some drugs metabolized by the liver and warfarin (a blood thinner) have been reported, and there are theoretical reasons to suspect that chamomile might interact with other drugs as well, such as sedatives."
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "ragweed"
+     ],
+     "quote": "People are more likely to experience allergic reactions to chamomile if they’re allergic to related plants such as ragweed, chrysanthemums, marigolds, or daisies."
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "hormone_sensitive"
+     ],
+     "quote": "In addition, chamomile might worsen any condition that is sensitive to exposure to estrogen, such as breast or uterine cancer."
+    }
+   ]
+  },
+  {
+   "id": "hawthorn",
+   "name": "Hawthorn",
+   "aliases": [
+    "crataegus pinnatifida",
+    "crataegus oxycantha",
+    "crataegus laevigata",
+    "crataegus monogyna",
+    "crataegus mexicana",
+    "mexican hawthorn",
+    "raiz de tejocote",
+    "english hawthorn",
+    "crataegus",
+    "harthorne",
+    "hawthorne",
+    "tejocote",
+    "hawthorn",
+    "ws 1442",
+    "shanzha"
+   ],
+   "latin": [
+    "Crataegus monogyna",
+    "Crataegus mexicana",
+    "Crataegus pinnatifida",
+    "Crataegus oxycantha",
+    "Crataegus laevigata"
+   ],
+   "identity_note": null,
+   "source": "hawthorn",
+   "variants": [
+    {
+     "pattern": "tejocote|crataegus mexicana|mexican hawthorn",
+     "label": "Labeled “tejocote root”",
+     "quote": "In January 2024, the FDA published a list of products, including dietary supplements labeled “tejocote root” (C. mexicana), that actually contain yellow oleander, a toxic plant known to cause harm to the nervous system, heart, stomach, and intestines.",
+     "level": "discuss"
+    }
+   ],
+   "rules": [
+    {
+     "level": "caution",
+     "meds": [
+      "digoxin",
+      "bp_med"
+     ],
+     "conditions": [
+      "heart_bp_kidney"
+     ],
+     "quote": "It’s unclear why, but one possibility is that hawthorn might have interacted with drugs the patients were taking."
+    }
+   ]
+  },
+  {
+   "id": "fenugreek",
+   "name": "Fenugreek",
+   "aliases": [
+    "trigonella foenum-graecum",
+    "trigonella",
+    "fenugreek"
+   ],
+   "latin": [
+    "Trigonella foenum-graecum"
+   ],
+   "identity_note": null,
+   "source": "fenugreek",
+   "variants": [],
+   "rules": [
+    {
+     "level": "caution",
+     "meds": [
+      "diabetes_med"
+     ],
+     "conditions": [
+      "diabetes"
+     ],
+     "quote": "Large doses may cause a harmful drop in blood sugar."
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "pregnancy"
+     ],
+     "quote": "Fenugreek is not safe for use during pregnancy in amounts greater than those found in food; its use has been linked to increased risks of birth defects in both animals and people."
+    }
+   ]
+  },
+  {
+   "id": "cranberry",
+   "name": "Cranberry",
+   "aliases": [
+    "vaccinium macrocarpon",
+    "oxycoccus macrocarpos",
+    "vaccinium oxycoccos",
+    "american cranberry",
+    "cranberry extract",
+    "cranberry"
+   ],
+   "latin": [
+    "Vaccinium macrocarpon",
+    "Oxycoccus macrocarpos",
+    "Vaccinium oxycoccos"
+   ],
+   "identity_note": null,
+   "source": "cranberry",
+   "variants": [],
+   "rules": [
+    {
+     "level": "caution",
+     "meds": [
+      "warfarin"
+     ],
+     "quote": "There is conflicting evidence about whether cranberry interacts with the anticoagulant (blood thinner) warfarin."
+    }
+   ]
+  },
+  {
+   "id": "passionflower",
+   "name": "Passionflower",
+   "aliases": [
+    "passiflora incarnata",
+    "passion flower",
+    "passionflower",
+    "apricot vine",
+    "passiflora",
+    "maracuja",
+    "maypop"
+   ],
+   "latin": [
+    "Passiflora incarnata"
+   ],
+   "identity_note": null,
+   "source": "passionflower",
+   "variants": [],
+   "rules": [
+    {
+     "level": "caution",
+     "conditions": [
+      "surgery"
+     ],
+     "quote": "Passionflower might interact with some anesthesia drugs, so avoid its use before surgery unless recommended by a health care provider."
+    },
+    {
+     "level": "caution",
+     "conditions": [
+      "pregnancy"
+     ],
+     "quote": "Passionflower should not be used during pregnancy as it may induce uterine contractions and possibly lead to other problems."
+    }
+   ]
+  },
+  {
+   "id": "peppermint-oil",
+   "name": "Peppermint oil",
+   "aliases": [
+    "mentha × piperita",
+    "mentha x piperita",
+    "mentha piperita",
+    "peppermint oil",
+    "peppermint"
+   ],
+   "latin": [
+    "Mentha x piperita"
+   ],
+   "identity_note": null,
+   "source": "peppermint-oil",
+   "variants": [],
+   "rules": [
+    {
+     "level": "note",
+     "quote": "Capsules containing peppermint oil are often enteric-coated to reduce the likelihood of heartburn."
+    }
+   ]
+  },
+  {
+   "id": "saw-palmetto",
+   "name": "Saw palmetto",
+   "aliases": [
+    "american dwarf palm tree",
+    "serenoa serrulata",
+    "sabal serrulata",
+    "serenoa repens",
+    "saw palmetto",
+    "cabbage palm",
+    "serenoa",
+    "sabal"
+   ],
+   "latin": [
+    "Serenoa repens",
+    "Serenoa serrulata",
+    "Sabal serrulata"
+   ],
+   "identity_note": null,
+   "source": "saw-palmetto",
+   "variants": [],
+   "rules": [
+    {
+     "level": "caution",
+     "conditions": [
+      "pregnancy"
+     ],
+     "quote": "Saw palmetto may be unsafe for use during pregnancy or while breastfeeding."
+    }
+   ]
+  }
+ ],
+ "ambiguous": [
+  {
+   "term": "ginseng",
+   "pattern": "\\bginseng\\b",
+   "qualified": "(asian|korean|chinese|red|white|american|siberian|indian|brazilian|peruvian)\\s+ginseng|panax|eleuthero",
+   "candidates": [
+    {
+     "species": "Panax ginseng",
+     "common": "Asian / Korean ginseng",
+     "herb": "asian-ginseng"
+    },
+    {
+     "species": "Panax quinquefolius",
+     "common": "American ginseng",
+     "herb": null
+    },
+    {
+     "species": "Eleutherococcus senticosus",
+     "common": "“Siberian ginseng” (eleuthero), a different genus",
+     "herb": null
+    }
+   ],
+   "source_quote": "Asian ginseng is one of several types of ginseng.",
+   "source_page": "asian-ginseng"
+  },
+  {
+   "term": "mint",
+   "pattern": "\\bmint\\b",
+   "qualified": "(pepper|spear|corn|water)\\s*mint|mentha",
+   "candidates": [
+    {
+     "species": "Mentha × piperita",
+     "common": "Peppermint",
+     "herb": "peppermint-oil"
+    },
+    {
+     "species": "Mentha spicata",
+     "common": "Spearmint",
+     "herb": null
+    },
+    {
+     "species": "Mentha arvensis",
+     "common": "Corn mint",
+     "herb": null
+    }
+   ],
+   "source_quote": null,
+   "source_page": null
+  },
+  {
+   "term": "chamomile",
+   "pattern": "\\bc(h)?amomile\\b",
+   "qualified": "(german|roman)\\s+c(h)?amomile|matricaria|chamaemelum|anthemis|chamomilla",
+   "candidates": [
+    {
+     "species": "Matricaria chamomilla",
+     "common": "German chamomile",
+     "herb": "chamomile"
+    },
+    {
+     "species": "Chamaemelum nobile",
+     "common": "Roman chamomile",
+     "herb": null
+    }
+   ],
+   "source_quote": "There are two types of chamomile: German chamomile and Roman chamomile.",
+   "source_page": "chamomile"
+  },
+  {
+   "term": "cohosh",
+   "pattern": "\\bcohosh\\b",
+   "qualified": "(black|blue)\\s+cohosh|actaea|cimicifuga|caulophyllum",
+   "candidates": [
+    {
+     "species": "Actaea racemosa",
+     "common": "Black cohosh",
+     "herb": "black-cohosh"
+    },
+    {
+     "species": "Caulophyllum thalictroides",
+     "common": "Blue cohosh — a different herb",
+     "herb": null
+    }
+   ],
+   "source_quote": "Blue cohosh may cause adverse effects such as high blood pressure, high blood sugar, and chest pain.",
+   "source_page": "black-cohosh"
+  }
+ ],
+ "unverified_hints": [
+  "aloe",
+  "american ginseng",
+  "amla",
+  "angelica",
+  "ashitaba",
+  "astragalus",
+  "bacopa",
+  "beetroot",
+  "berberine",
+  "bilberry",
+  "bitter melon",
+  "black seed",
+  "blue cohosh",
+  "boswellia",
+  "burdock",
+  "butterbur",
+  "cascara",
+  "cat's claw",
+  "caulophyllum",
+  "cayenne",
+  "chaga",
+  "chamaemelum",
+  "chasteberry",
+  "cinnamon",
+  "coleus",
+  "cordyceps",
+  "damiana",
+  "dandelion",
+  "dong quai",
+  "elderberry",
+  "eleuthero",
+  "eleutherococcus",
+  "eleutherococcus senticosus",
+  "evening primrose",
+  "fadogia",
+  "feverfew",
+  "forskolin",
+  "garcinia",
+  "gotu kola",
+  "grape seed",
+  "guarana",
+  "gymnema",
+  "hibiscus",
+  "holy basil",
+  "hops",
+  "horny goat weed",
+  "horse chestnut",
+  "kanna",
+  "kratom",
+  "kudzu",
+  "lavender",
+  "lemon balm",
+  "lemon verbena",
+  "licorice",
+  "linden",
+  "lion's mane",
+  "lutein",
+  "maca",
+  "marshmallow root",
+  "mentha arvensis",
+  "mentha spicata",
+  "moringa",
+  "motherwort",
+  "mucuna",
+  "mullein",
+  "nettle",
+  "nigella",
+  "olive leaf",
+  "oregano",
+  "panax quinquefolius",
+  "pau d'arco",
+  "pine bark",
+  "pomegranate",
+  "pygeum",
+  "quercetin",
+  "reishi",
+  "resveratrol",
+  "rhodiola",
+  "roman chamomile",
+  "rosemary",
+  "schisandra",
+  "sea buckthorn",
+  "senna",
+  "shatavari",
+  "siberian ginseng",
+  "skullcap",
+  "slippery elm",
+  "spearmint",
+  "spirulina",
+  "tongkat ali",
+  "tribulus",
+  "triphala",
+  "tulsi",
+  "turkey tail",
+  "uva ursi",
+  "valeriana wallichii",
+  "vitex",
+  "white willow",
+  "yarrow",
+  "yerba mate",
+  "yohimbine"
+ ]
+}
