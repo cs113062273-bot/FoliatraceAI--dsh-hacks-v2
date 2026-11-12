@@ -39,8 +39,13 @@ export function indexKnowledge(kb) {
 // ------------------------------------------------------------------ products
 const AMOUNT = /(\d+(?:[.,]\d+)?)\s*(mcg|µg|ug|mg|g|iu|ml|%)\b/i;
 
-/** OCR fragments and table headers that are not ingredients ("me ——", "Amount = ="). */
-export const isLabelNoise = t => !/\p{L}{3}/u.test(t) || /^amount\b/i.test(t);
+/** Discard only clear OCR debris and headings; short ingredient names stay visible. */
+export function isLabelNoise(text) {
+  const t = norm(text);
+  return !/\p{L}/u.test(t)
+    || /^(?:amount(?:\s+per\s+serving)?|supplement\s+facts)[\s:=_-]*$/i.test(t)
+    || /^me(?:\s*[-_=]){2,}\s*$/i.test(t);
+}
 
 /** Parse free label text (typed, pasted or OCR) into ingredient lines. */
 export function parseLabelText(text, name = 'Product') {
