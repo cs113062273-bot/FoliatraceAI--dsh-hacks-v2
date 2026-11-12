@@ -1,0 +1,30 @@
+{
+ "tesseract.min.js": {
+  "bytes": 66695,
+  "sha256": "a8e29918d098b2b06e1012bdaeffb4aec0445c5d5654709023e0bd1f442a80e8"
+ },
+ "worker.min.js": {
+  "bytes": 123724,
+  "sha256": "aca1229639fc9907d86f96e825955a2b7c5716d17f3bc3acd71f9c7ab66181fc"
+ },
+ "tesseract-core-lstm.wasm.js": {
+  "bytes": 3938277,
+  "sha256": "8f04aa0cc81e7bde33f80e92fa01a7a665f0b4884d098acf5de9c7104a11dfaa"
+ },
+ "tesseract-core-simd-lstm.wasm.js": {
+  "bytes": 3938657,
+  "sha256": "ce20eda9533cbed1e6c2b4276fbae1e0adc61b6754b5513084be601787b457cf"
+ },
+ "lang/eng.traineddata.gz": {
+  "bytes": 2952873,
+  "sha256": "45b4cb346724ac1774f1c36f42f182b887bcdb28ebe63e6fff90ac41f3fcff91"
+ },
+ "LICENSE-tesseract.js.txt": {
+  "bytes": 11357,
+  "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1"
+ },
+ "_versions": {
+  "@tesseract.js-data/eng": "1.0.0",
+  "tesseract.js": "5.1.1"
+ }
+}
