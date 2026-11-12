@@ -1,2 +1,13 @@
 # Hosting configuration is maintained in the separate deployment checkout.
 .openai/
+.runtime/
+node_modules/
+__pycache__/
+.venv/
+.env
+.env.*
+!.env.example
+*.log
+*.tmp
+Thumbs.db
+.DS_Store
