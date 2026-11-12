@@ -1,13 +1,21 @@
-# FoliaTrace AI — public browser product
+# FoliaTrace AI
 
-**Bring the bottle. Start a better conversation.** On-device language AI suggests a group from "my water pill" or "my cholesterol pill"; a neural cross-encoder finds research for the bottle and each goal. Every warning stays a verbatim NIH sentence.
+**Your words. Your bottle. Evidence your pharmacist can use.**
 
-Live: https://foliatrace-research.civil-bell-5511.chatgpt.site
+FoliaTrace AI turns supplement labels and everyday medicine descriptions into a brief for the pharmacy conversation. Try Ray: “my cholesterol pill” becomes a group suggested by AI, a relevant NIH source card and a question to confirm the exact medicine.
 
-This repository contains the static `build/` declared in `.openai/hosting.json`. `ai-worker.js` and `medicine-language.js` handle language inference/exclusions. `model-search-worker.js` and `research-evidence.js` rank evidence and extract literal context. `safety-engine.js` matches verified NIH text. OCR is an optional input aid; QR carries brief data in a URL fragment. All analysis runs locally in the browser.
+## Try the product
 
-Fresh synthetic language holdout: 37/39 medicine descriptions assigned to the correct group (94.9%); 0 wrong group assignments, 2 left unknown; all 15 other/negated phrases left unassigned (54 synthetic English phrases total). Library: 423 licensed abstracts. Verification: 54/54 public-build and 54/54 local `/check/` real-browser checks; 20/20 behavioral unit tests. Development-calibrated research floor, unreviewed medicine mappings, synthetic language tests and other limits are disclosed in `source.zip` → `README.md` and `docs/ai_disclosure.md`.
+**[Open FoliaTrace AI](https://foliatrace-research.civil-bell-5511.chatgpt.site)**
 
-`source.zip` contains the complete local app, source, builders, behavioral tests and evaluation reports. `one-page.pdf` introduces the product; `DATA-NOTICE.md`, `CODE-LICENSE.txt` and `inference/*LICENSE*` retain attribution. Models/tokenizers are pinned and hash-checked. `.gitattributes` preserves exact deployed bytes.
+- Add a bottle through NIH search, pasted ingredients or a label photo.
+- Describe your medicines and your goal for the supplement.
+- Read the questions and cited research, then share the brief by QR or export.
 
-Fictional people/products. A pharmacist must confirm inferred medicine groups and clinical applicability. No generated medical warning, dose recommendation or safety guarantee.
+Language understanding and research ranking run in the browser. This repository includes the static product and its pinned model assets.
+
+## Downloads
+
+[One-page overview](build/one-page.pdf) · [Product source](build/source.zip) · [Complete code PDF](build/code.pdf)
+
+The source archive includes the full local app, reproducible evaluations and AI development disclosure. [Data and model attribution](build/DATA-NOTICE.md) · [MIT code licence](build/CODE-LICENSE.txt)
