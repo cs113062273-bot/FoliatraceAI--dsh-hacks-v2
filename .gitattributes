@@ -1,0 +1,2 @@
+# Deployed files must keep their exact bytes (integrity hashes, PDF, WASM).
+* -text
