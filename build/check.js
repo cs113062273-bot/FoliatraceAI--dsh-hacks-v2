@@ -81,6 +81,7 @@ function renderConditions() {
     c.onchange = () => { state.conditions = [...box.querySelectorAll('input:checked')].map(x => x.value); state.example = null; save(); };
     l.append(c, el('span', label)); box.append(l);
   }
+  if (state.conditions.length) $('#conditions-box').open = true;
 }
 
 function renderAll() {
@@ -123,16 +124,16 @@ function gapHTML(g) {
     const cands = g.candidates.map(c => {
       let body;
       if (c.herb && c.findings.length) body = c.findings.map(f => `<div class="if-finding"><p>${fmtQuote(f.quotes[0])}</p><p class="small">${sourceLine(f.source)}</p><p class="ask"><strong>Ask:</strong> ${esc(f.question)}</p></div>`).join('');
-      else if (c.herb) body = '<p class="small">Covered by an NIH fact sheet; nothing specific to the medicines or situation you entered.</p>';
-      else body = '<p class="small">Not covered by FoliaTrace’s NIH set. Ask your pharmacist.</p>';
+      else if (c.herb) body = '<p class="small">No NIH statement for your medicines.</p>';
+      else body = '<p class="small">Not covered — ask your pharmacist.</p>';
       return `<li><p><strong><i>${esc(c.species)}</i></strong> · ${esc(c.common)}${c.flagged ? ' <span class="pill pill-warn">applies to you</span>' : ''}</p>${body}</li>`;
     }).join('');
-    return `<article class="gap identity"><h4>“${esc(g.ingredient)}” — which ${esc(g.term)}?</h4><p class="small">In ${esc(g.productName)}. The label name fits more than one plant, and the NIH statements differ. FoliaTrace does not guess.</p>${g.source ? `<blockquote class="nih small"><p>“${esc(g.source.quote)}”</p><p><a href="${esc(g.source.url)}" target="_blank" rel="noopener noreferrer">NIH source</a></p></blockquote>` : ''}<ul class="candidates">${cands}</ul><p class="ask"><strong>Ask:</strong> Which species is the “${esc(g.ingredient)}” in ${esc(g.productName)}? Can we check the label or the maker?</p></article>`;
+    return `<article class="gap identity"><h4>“${esc(g.ingredient)}” — which ${esc(g.term)}?</h4><p class="small">In ${esc(g.productName)}. This name fits more than one plant.</p><ul class="candidates">${cands}</ul><p class="ask"><strong>Ask:</strong> Which species is the “${esc(g.ingredient)}” in ${esc(g.productName)}?</p></article>`;
   }
-  if (g.type === 'blend') return `<li><strong>${g.ingredients.map(esc).join(', ')}</strong> ${g.ingredients.length > 1 ? 'are' : 'is'} inside “${esc(g.blend)}”${g.total ? ` (${esc(g.total)} in total)` : ''} in ${esc(g.productName)}. The label does not say how much of each you get.</li>`;
-  if (g.type === 'unverified') return `<li><strong>${esc(g.ingredient)}</strong>: not covered by FoliaTrace’s NIH set yet${g.name && g.name !== g.ingredient ? ` (${esc(g.name)})` : ''}. Ask your pharmacist to check it.</li>`;
-  if (g.type === 'duplicate') return `<li><strong>${esc(g.herbName)}</strong> appears in ${g.products.length} products (${g.products.map(esc).join(', ')}). You may be taking more than either label suggests.</li>`;
-  if (g.type === 'unknown_medicine') return `<li>We did not recognise the medicine <strong>${esc(g.input)}</strong>. It was not checked; your pharmacist still needs to know about it.</li>`;
+  if (g.type === 'blend') return `<li><strong>${g.ingredients.map(esc).join(', ')}</strong> ${g.ingredients.length > 1 ? 'are' : 'is'} inside “${esc(g.blend)}”${g.total ? ` (${esc(g.total)} in total)` : ''}: amount of each not stated.</li>`;
+  if (g.type === 'unverified') return `<li><strong>${esc(g.ingredient)}</strong>: not covered — ask your pharmacist.</li>`;
+  if (g.type === 'duplicate') return `<li><strong>${esc(g.herbName)}</strong> is in ${g.products.length} products: ${g.products.map(esc).join(', ')}.</li>`;
+  if (g.type === 'unknown_medicine') return `<li>We did not recognise the medicine <strong>${esc(g.input)}</strong> — tell your pharmacist.</li>`;
   return '';
 }
 
@@ -147,26 +148,26 @@ function briefHTML(r, opts = {meds: true, conditions: true, ingredients: true}, 
     if (opts.conditions && r.conditions.length) h += `<p><strong>About me:</strong> ${r.conditions.map(c => esc(kb.conditions[c])).join('; ')}</p>`;
     h += '<h2>Products</h2>' + state.products.map(p => `<div class="print-product"><strong>${esc(p.name)}</strong>${p.brand ? ' · ' + esc(p.brand) : ''}${p.source === 'dsld' ? ` · NIH DSLD label #${esc(p.dsldId)}` : p.fictional ? ' · fictional example' : p.source === 'ocr' ? ' · text read from photo' : ''}${opts.ingredients ? `<p class="small">${p.ingredients.filter(x => !x.other).map(x => esc(x.text.split(' · ')[0])).join('; ')}</p>` : ''}</div>`).join('');
   }
-  h += `<section class="brief-sec"><h3>${main.length ? 'Raise these first' : 'No NIH statement matched your medicines or situation'}</h3>`;
-  h += main.length ? `<div class="findings">${main.map(f => findingHTML(f)).join('')}</div>` : `<p>That is not the same as “safe”. NIH: “${esc(kb.general_quote)}” Show your pharmacist the products below.</p>`;
+  h += `<section class="brief-sec"><h3>${main.length ? 'Raise these first' : 'Nothing NIH names for your medicines'}</h3>`;
+  h += main.length ? `<div class="findings">${main.map(f => findingHTML(f)).join('')}</div>` : `<p>That doesn’t mean safe — NIH: “${esc(kb.general_quote)}”</p>`;
   h += '</section>';
   if (ident.length || other.length) {
     h += `<section class="brief-sec"><h3>What the label doesn’t settle</h3>${ident.map(gapHTML).join('')}${other.length ? `<ul class="gap-list">${other.map(gapHTML).join('')}</ul>` : ''}</section>`;
   }
   if (notes.length) h += `<section class="brief-sec"><h3>Label &amp; product quality notes</h3><div class="findings">${notes.map(f => findingHTML(f, true)).join('')}</div></section>`;
-  const rows = r.checked.map(c => `<tr><th scope="row">${esc(c.ingredient.split(' · ')[0])}${c.amount ? `<span class="small"> · ${esc(c.amount)}</span>` : ''}<br><span class="small">${esc(c.productName)}</span></th><td><a href="${esc(c.source.url)}" target="_blank" rel="noopener noreferrer">${esc(c.herbName)}</a>${c.basis === 'label_species' ? `<br><span class="pill">label states <i>${esc(c.species)}</i></span>` : ''}${c.basis === 'fuzzy' ? `<br><span class="pill">read from photo as “${esc(c.read)}”</span>` : ''}${c.identity_note ? `<br><span class="small">${esc(c.identity_note)}</span>` : ''}</td><td>${c.flagged ? 'See above' : 'No NIH statement matched your medicines or situation'}${forPrint ? '' : `<br><button type="button" class="link research" data-herb="${esc(c.herbName)}">Research this herb →</button>`}</td></tr>`).join('');
+  const rows = r.checked.map(c => `<tr><th scope="row">${esc(c.ingredient.split(' · ')[0])}${c.amount ? `<span class="small"> · ${esc(c.amount)}</span>` : ''}<br><span class="small">${esc(c.productName)}</span></th><td><a href="${esc(c.source.url)}" target="_blank" rel="noopener noreferrer">${esc(c.herbName)}</a>${c.basis === 'label_species' ? `<br><span class="pill">label states <i>${esc(c.species)}</i></span>` : ''}${c.basis === 'fuzzy' ? `<br><span class="pill">read from photo as “${esc(c.read)}”</span>` : ''}${c.identity_note ? `<br><span class="small">${esc(c.identity_note)}</span>` : ''}</td><td>${c.flagged ? 'See above' : 'Nothing for you'}${forPrint ? '' : `<br><button type="button" class="link research" data-herb="${esc(c.herbName)}">Research this herb →</button>`}</td></tr>`).join('');
   const others = (r.unmatched || []).map(u => esc(u.ingredient.split(' · ')[0]));
-  if (rows || others.length) h += `<section class="brief-sec"><h3>Every ingredient we matched to NIH</h3>${rows ? `<div class="table-wrap"><table class="checked"><thead><tr><th scope="col">On the label</th><th scope="col">NIH fact sheet</th><th scope="col">For you</th></tr></thead><tbody>${rows}</tbody></table></div>` : ''}${others.length ? `<p class="small unmatched">Also on the label, not matched to any herb fact sheet FoliaTrace covers: ${others.join('; ')}. Vitamins, minerals and other ingredients are not checked.</p>` : ''}</section>`;
-  h += `<p class="small foot">FoliaTrace never states that a combination is safe. Statements are quoted from NCCIH fact sheets (U.S. National Institutes of Health, public domain), retrieved ${esc(kb.built)}. Only medicines or groups a quoted sentence names are matched. A label describes what a maker declares, not what a bottle contains.</p>`;
+  if (rows || others.length) h += `<section class="brief-sec"><h3>Everything we checked</h3>${rows ? `<div class="table-wrap"><table class="checked"><thead><tr><th scope="col">On the label</th><th scope="col">NIH fact sheet</th><th scope="col">For you</th></tr></thead><tbody>${rows}</tbody></table></div>` : ''}${others.length ? `<p class="small unmatched">Not checked: ${others.join('; ')}.</p>` : ''}</section>`;
+  h += `<p class="small foot">Quotes from NIH NCCIH fact sheets (public domain), retrieved ${esc(kb.built)}. No statement does not mean safe. Not medical advice.</p>`;
   return h;
 }
 
 function summaryHTML(r) {
   const n = (v, label, cls) => `<p class="sum ${cls}"><strong>${v}</strong><span>${label}</span></p>`;
-  return n(r.counts.discuss, r.counts.discuss === 1 ? 'combination to discuss before taking together' : 'combinations to discuss before taking together', 'sum-discuss')
-    + n(r.counts.caution, r.counts.caution === 1 ? 'caution for your situation' : 'cautions for your situation', 'sum-caution')
-    + n(r.gaps.length, r.gaps.length === 1 ? 'thing the label doesn’t settle' : 'things the label doesn’t settle', 'sum-gap')
-    + n(r.checked.length, (r.checked.length === 1 ? 'ingredient' : 'ingredients') + ' matched to NIH fact sheets', 'sum-checked');
+  return n(r.counts.discuss, 'to discuss before combining', 'sum-discuss')
+    + n(r.counts.caution, r.counts.caution === 1 ? 'caution for you' : 'cautions for you', 'sum-caution')
+    + n(r.gaps.length, r.gaps.length === 1 ? 'label question' : 'label questions', 'sum-gap')
+    + n(r.checked.length, (r.checked.length === 1 ? 'herb' : 'herbs') + ' checked', 'sum-checked');
 }
 
 function runCheck(scroll = true) {
@@ -174,7 +175,7 @@ function runCheck(scroll = true) {
   result = analyze({products: state.products, medicines: state.medicines, conditions: state.conditions}, idx);
   $('#brief-summary').innerHTML = summaryHTML(result);
   $('#brief-body').innerHTML = briefHTML(result);
-  $('#brief-foot').textContent = `Checked ${new Date().toLocaleTimeString()} · knowledge base ${kb.version} · ${Object.keys(kb.sources).length} NIH fact sheets · ${kb.medicines.length} medicines recognised.`;
+  $('#brief-foot').textContent = '';
   $('#brief').hidden = false;
   $('#brief').dataset.discuss = result.counts.discuss;
   for (const b of document.querySelectorAll('#brief .research')) b.onclick = () => window.dispatchEvent(new CustomEvent('foliatrace:research', {detail: `${b.dataset.herb} clinical trial`}));
@@ -308,7 +309,7 @@ async function runOcr(file, selectTab) {
     f.elements.text.focus();
     st.textContent = '';
     $('#text-status')?.remove();
-    const note = el('p', `Read on your device in ${((performance.now() - t0) / 1000).toFixed(1)} s (confidence ${Math.round(data.confidence)}%). Please check the text, then add the product.`, 'small'); note.id = 'text-status'; note.setAttribute('role', 'status');
+    const note = el('p', `Read in ${((performance.now() - t0) / 1000).toFixed(1)} s. Check the text, then add it.`, 'small'); note.id = 'text-status'; note.setAttribute('role', 'status');
     f.prepend(note);
   } catch (e) { st.textContent = 'On-device text recognition is unavailable (' + e.message + '). Please type the label instead.'; }
 }
@@ -321,7 +322,7 @@ async function boot() {
   } catch (e) { $('#run-hint').textContent = 'The NIH knowledge base could not load. Reload to try again.'; return; }
   load(); renderExamples(); renderAll();
   const quoteCount = kb.herbs.reduce((n, h) => n + h.rules.length + (h.variants || []).length, 0);
-  $('#kb-stats').textContent = `Current build: ${kb.herbs.length} herbs, ${kb.verified_passages || quoteCount} NIH passages verified word-for-word, ${kb.medicines.length} medicines (${kb.medicines.reduce((n, m) => n + 1 + m.aliases.length, 0)} names).`;
+  $('#kb-stats').textContent = `${kb.herbs.length} herbs · ${kb.verified_passages || quoteCount} NIH passages · ${kb.medicines.length} medicines.`;
   const dl = $('#med-names'); for (const m of kb.medicines) for (const a of [m.name, ...m.aliases]) { const o = el('option'); o.value = a; dl.append(o); }
   const selectTab = setupTabs();
   $('#dsld-form').onsubmit = e => { e.preventDefault(); const q = e.target.elements.q.value.trim(); if (q.length >= 2) dsldSearch(q); };
