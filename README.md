@@ -1,18 +1,13 @@
-# FoliaTrace — public site
+# FoliaTrace — public browser product
 
-**Bring the bottle. Start a better conversation.** A supplement label goes in; a pharmacist brief comes out, with every warning quoted word-for-word from the U.S. National Institutes of Health (NCCIH) and matched to the person's own medicines.
+**Bring the bottle. Start a better conversation.** On-device language AI suggests a group from "my water pill" or "my cholesterol pill"; a neural cross-encoder finds research for the bottle and each goal. Every warning stays a verbatim NIH sentence.
 
 Live: https://foliatrace-research.civil-bell-5511.chatgpt.site
 
-This repository is the deployable static build (`build/`, published by `.openai/hosting.json`). Everything runs in the browser:
+This repository contains the static `build/` declared in `.openai/hosting.json`. `ai-worker.js` and `medicine-language.js` handle language inference/exclusions. `model-search-worker.js` and `research-evidence.js` rank evidence and extract literal context. `safety-engine.js` matches verified NIH text. OCR is an optional input aid; QR carries brief data in a URL fragment. All analysis runs locally in the browser.
 
-| Path | Purpose |
-|---|---|
-| `index.html`, `check.js`, `demo.css` | Checker: NIH label search, paste or photo input, medicines, pharmacist brief, QR handoff |
-| `safety-engine.js`, `safety-knowledge.json`, `safety-examples.js` | Matching engine, NIH-verified knowledge base (25 herbs, 74 quoted passages, 134 medicines), fictional examples |
-| `ocr/`, `vendor/qrcode.js` | On-device text recognition (Tesseract) and QR encoder |
-| `demo.js`, `model-search-worker.js`, `pair-tokenizer.js`, `inference/`, `browser-library.json`, `care-cases.json` | On-device research ranking and recorded pharmacist evidence cases |
-| `source.zip` | Full source: local app, knowledge-base builder, tests, browser QA and real-label evaluation |
-| `one-page.pdf`, `DATA-NOTICE.md`, `CODE-LICENSE.txt` | One-page overview, data attribution, MIT licence |
+Fresh synthetic language holdout: 37/39 medicine descriptions assigned to the correct group (94.9%); 0 wrong group assignments, 2 left unknown; all 15 other/negated phrases left unassigned (54 synthetic English phrases total). Library: 423 licensed abstracts. Verification: 49/49 public-build and 49/49 local `/check/` real-browser checks; 18/18 behavioral unit tests. Development-calibrated research floor, unreviewed medicine mappings, synthetic language tests and other limits are disclosed in `source.zip` → `README.md` and `docs/ai_disclosure.md`.
 
-FoliaTrace prepares a conversation with a pharmacist; it does not give medical advice or state that a combination is safe. Example people and labels are fictional.
+`source.zip` contains the complete local app, source, builders, behavioral tests and evaluation reports. `one-page.pdf` introduces the product; `DATA-NOTICE.md`, `CODE-LICENSE.txt` and `inference/*LICENSE*` retain attribution. Models/tokenizers are pinned and hash-checked. `.gitattributes` preserves exact deployed bytes.
+
+Fictional people/products. A pharmacist must confirm inferred medicine groups and clinical applicability. No generated medical warning, dose recommendation or safety guarantee.
