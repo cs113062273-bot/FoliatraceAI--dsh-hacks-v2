@@ -1,0 +1,73 @@
+{
+  "created_at": "2026-10-21T03:57:10.230154+00:00",
+  "dataset": "SciFact original development split, annotated-evidence claims only",
+  "documents": 5183,
+  "queries": 188,
+  "excluded_no_annotated_evidence": 112,
+  "labels": "Published human claim-evidence annotations; relevance includes both support and contradiction; cited_doc_ids not used",
+  "configuration": "Unchanged app TextIndex; BM25, pinned MiniLM embeddings, RRF k=60, pinned cross-encoder reranking top40 hybrid; sequence length384; no fitting or parameter search on these claims",
+  "metrics": {
+    "bm25": {
+      "recall@1": 0.6857269503546098,
+      "ndcg@1": 0.7021276595744681,
+      "recall@5": 0.8727836879432623,
+      "ndcg@5": 0.7942160234109857,
+      "recall@10": 0.9242021276595744,
+      "ndcg@10": 0.8122135594174287,
+      "recall@40": 0.9609042553191489,
+      "ndcg@40": 0.8216652461924685,
+      "mrr@10": 0.7809460486322187
+    },
+    "embedding": {
+      "recall@1": 0.6161347517730497,
+      "ndcg@1": 0.6276595744680851,
+      "recall@5": 0.8671985815602838,
+      "ndcg@5": 0.7563542700289992,
+      "recall@10": 0.922340425531915,
+      "ndcg@10": 0.7752864078095716,
+      "recall@40": 0.9792553191489362,
+      "ndcg@40": 0.7885192475431613,
+      "mrr@10": 0.7284764437689969
+    },
+    "hybrid": {
+      "recall@1": 0.6826241134751772,
+      "ndcg@1": 0.6968085106382979,
+      "recall@5": 0.9022163120567376,
+      "ndcg@5": 0.8148164919035401,
+      "recall@10": 0.9345744680851064,
+      "ndcg@10": 0.8263046062842251,
+      "recall@40": 0.9819148936170212,
+      "ndcg@40": 0.8390523922368569,
+      "mrr@10": 0.7946576325565686
+    },
+    "rerank": {
+      "recall@1": 0.7415780141843971,
+      "ndcg@1": 0.7606382978723404,
+      "recall@5": 0.9288120567375887,
+      "ndcg@5": 0.8567552946562043,
+      "recall@10": 0.9551418439716312,
+      "ndcg@10": 0.8663751896879137,
+      "recall@40": 0.9819148936170212,
+      "ndcg@40": 0.8736951372700416,
+      "mrr@10": 0.8427642688280986
+    }
+  },
+  "rerank_minus_bm25_ndcg10_cluster_bootstrap": {
+    "interval95": [
+      0.02124467600613821,
+      0.09173757025032586
+    ],
+    "clusters": 165,
+    "draws": 1000,
+    "seed": 20261021
+  },
+  "seconds": {
+    "bm25": 4.82,
+    "embedding": 115.93,
+    "hybrid": 6.39,
+    "rerank": 366.66
+  },
+  "dataset_manifest_sha256": "1c1055ff8b855ddab640ca00d332c9eddcf153378c99c3a5b35d3ec69b0477ac",
+  "reranker_manifest_sha256": "4fa3ba134980d1484e5d4e088c65364afa04115c7728d1cf5daf4e0600ee0d7c",
+  "scope": "External biomedical retrieval component evidence, not in-domain traditional-use search accuracy, historical identity or evidence entailment. Development labels are public; this is untuned evaluation, not blind test or official leaderboard submission."
+}
