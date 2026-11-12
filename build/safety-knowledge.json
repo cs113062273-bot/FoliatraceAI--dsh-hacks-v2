@@ -1985,8 +1985,8 @@
     "glycyrrhiza",
     "liquorice",
     "licorice",
-    "gan cao",
-    "gan zao"
+    "gan zao",
+    "gan cao"
    ],
    "latin": [
     "Glycyrrhiza glabra",
@@ -2099,8 +2099,8 @@
    "name": "Green tea extract",
    "aliases": [
     "epigallocatechin gallate",
-    "camellia sinensis",
     "green tea extract",
+    "camellia sinensis",
     "epigallocatechin",
     "green tea",
     "egcg"
@@ -2152,8 +2152,8 @@
     "korean red ginseng",
     "chinese ginseng",
     "korean ginseng",
-    "panax ginseng",
     "asian ginseng",
+    "panax ginseng",
     "white ginseng",
     "red ginseng"
    ],
@@ -2197,8 +2197,8 @@
    "id": "turmeric",
    "name": "Turmeric / curcumin",
    "aliases": [
-    "curcuma domestica",
     "curcuma aromatica",
+    "curcuma domestica",
     "indian saffron",
     "curcuma longa",
     "turmeric root",
@@ -2326,8 +2326,8 @@
     "echinacea angustifolia",
     "american coneflower",
     "echinacea purpurea",
-    "purple coneflower",
     "echinacea pallida",
+    "purple coneflower",
     "echinacea"
    ],
    "latin": [
@@ -2360,15 +2360,15 @@
    "name": "Black cohosh",
    "aliases": [
     "cimicifuga racemosa",
-    "actaea racemosa",
     "black snakeroot",
+    "actaea racemosa",
     "black cohosh",
-    "rattleroot",
     "rattleweed",
+    "rattleroot",
     "cimicifuga",
     "macrotys",
-    "bugbane",
-    "bugwort"
+    "bugwort",
+    "bugbane"
    ],
    "latin": [
     "Actaea racemosa",
@@ -2491,10 +2491,10 @@
    "aliases": [
     "silybum marianum",
     "carduus marianus",
-    "mary thistle",
     "milk thistle",
-    "silibinin",
+    "mary thistle",
     "silymarin",
+    "silibinin",
     "silybum"
    ],
    "latin": [
@@ -2598,16 +2598,16 @@
    "name": "Hawthorn",
    "aliases": [
     "crataegus pinnatifida",
-    "crataegus oxycantha",
     "crataegus laevigata",
+    "crataegus oxycantha",
     "crataegus monogyna",
     "crataegus mexicana",
-    "mexican hawthorn",
     "raiz de tejocote",
     "english hawthorn",
+    "mexican hawthorn",
+    "hawthorne",
     "crataegus",
     "harthorne",
-    "hawthorne",
     "tejocote",
     "hawthorn",
     "ws 1442",
@@ -2885,6 +2885,160 @@
    "source_page": "black-cohosh"
   }
  ],
+ "ai_medicine_groups": {
+  "threshold": 0.55,
+  "margin": 0.06,
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "note": "AI understanding of how a person describes a medicine. Used only above the threshold; otherwise the medicine stays unrecognised. Evaluation: reports/ai_medicine_understanding_v2_2026-11-12.json",
+  "groups": [
+   {
+    "id": "blood_thinner",
+    "label": "a blood thinner (anticoagulant)",
+    "classes": [
+     "anticoagulant",
+     "bleeding"
+    ],
+    "description": "A blood thinner (anticoagulant) such as warfarin, Coumadin, Eliquis or Xarelto, taken to prevent blood clots and stroke.",
+    "prototypes": [
+     "Blood thinning medicine to prevent blood clots."
+    ]
+   },
+   {
+    "id": "aspirin",
+    "label": "daily aspirin",
+    "classes": [
+     "aspirin",
+     "bleeding"
+    ],
+    "description": "Daily low-dose aspirin, a baby aspirin taken for the heart.",
+    "prototypes": [
+     "Aspirin taken daily in a low dose for the heart."
+    ]
+   },
+   {
+    "id": "birth_control",
+    "label": "birth control pills",
+    "classes": [
+     "oral_contraceptive"
+    ],
+    "description": "Birth control pills, oral contraceptives taken to prevent pregnancy.",
+    "prototypes": [
+     "Contraceptive medicine to prevent pregnancy."
+    ]
+   },
+   {
+    "id": "antidepressant",
+    "label": "an antidepressant",
+    "classes": [
+     "serotonergic"
+    ],
+    "description": "An antidepressant for depression or anxiety, such as an SSRI like Zoloft, Prozac or Lexapro.",
+    "prototypes": [
+     "Antidepressant medicine prescribed for depression and anxiety."
+    ]
+   },
+   {
+    "id": "sleep",
+    "label": "a sleeping pill or sedative",
+    "classes": [
+     "sedative"
+    ],
+    "description": "A sleeping pill or sedative for insomnia, such as Ambien, or a benzodiazepine like Xanax or Valium.",
+    "prototypes": [
+     "Prescription sleeping medicine for insomnia."
+    ]
+   },
+   {
+    "id": "seizure",
+    "label": "an anti-seizure medicine",
+    "classes": [
+     "anticonvulsant"
+    ],
+    "description": "An anti-seizure medicine for epilepsy, such as Keppra, Dilantin or Lamictal.",
+    "prototypes": [
+     "Anticonvulsant medicine to prevent seizures and epileptic fits."
+    ]
+   },
+   {
+    "id": "cholesterol",
+    "label": "a statin (cholesterol medicine)",
+    "classes": [
+     "statin"
+    ],
+    "description": "A statin to lower cholesterol, such as Lipitor, Crestor or Zocor.",
+    "prototypes": [
+     "Cholesterol lowering medicine, a statin tablet."
+    ]
+   },
+   {
+    "id": "diabetes",
+    "label": "a diabetes medicine",
+    "classes": [
+     "diabetes_med"
+    ],
+    "description": "A diabetes medicine to lower blood sugar, such as metformin, insulin or Ozempic.",
+    "prototypes": [
+     "Medicine for diabetes to control blood sugar."
+    ]
+   },
+   {
+    "id": "blood_pressure",
+    "label": "a blood-pressure medicine",
+    "classes": [
+     "bp_med"
+    ],
+    "description": "A blood pressure medicine for hypertension, such as lisinopril, amlodipine, losartan, a beta blocker or a water pill (diuretic).",
+    "prototypes": [
+     "A water pill, a diuretic medicine that helps remove excess fluid.",
+     "Medicine to lower high blood pressure and treat hypertension."
+    ]
+   },
+   {
+    "id": "steroid",
+    "label": "a steroid (corticosteroid)",
+    "classes": [
+     "corticosteroid"
+    ],
+    "description": "A steroid pill such as prednisone, taken for inflammation, asthma flare-ups or arthritis.",
+    "prototypes": [
+     "Corticosteroid tablets to treat inflammation."
+    ]
+   },
+   {
+    "id": "thyroid",
+    "label": "a thyroid hormone medicine",
+    "classes": [
+     "thyroid_hormone"
+    ],
+    "description": "Thyroid hormone pills, such as levothyroxine or Synthroid, for an underactive thyroid.",
+    "prototypes": [
+     "Thyroid hormone replacement for an underactive thyroid."
+    ]
+   },
+   {
+    "id": "transplant",
+    "label": "an anti-rejection medicine (immunosuppressant)",
+    "classes": [
+     "immunosuppressant"
+    ],
+    "description": "An anti-rejection medicine after an organ transplant, an immunosuppressant such as tacrolimus or cyclosporine.",
+    "prototypes": [
+     "Immunosuppressant medicine to prevent rejection after organ transplant."
+    ]
+   },
+   {
+    "id": "hiv",
+    "label": "an HIV medicine",
+    "classes": [
+     "hiv"
+    ],
+    "description": "HIV medicine, antiretroviral therapy.",
+    "prototypes": [
+     "Antiretroviral medicines to treat HIV."
+    ]
+   }
+  ]
+ },
  "unverified_hints": [
   "aloe",
   "american ginseng",

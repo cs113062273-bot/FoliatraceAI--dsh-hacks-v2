@@ -1,6 +1,7 @@
 // FoliaTrace safety engine. Pure functions, no DOM, no network.
 // Matches label wording to NIH (NCCIH) fact-sheet statements and the person's medicines.
 // It never chooses between candidate species and never reports "safe".
+import {medicineExclusion} from './medicine-language.js';
 
 export const norm = s => String(s ?? '').normalize('NFKD').replace(/[̀-ͯ]/g, '')
   .replace(/[‘’ʼ`´]/g, "'").replace(/[“”]/g, '"').replace(/[‐-―]/g, '-')
@@ -150,8 +151,23 @@ export function identify(product, idx, {fuzzy = false} = {}) {
 }
 
 // ----------------------------------------------------------------- medicines
-export function resolveMedicines(inputs, idx) {
+/**
+ * Dictionary first (exact, brand, typo). Only if that fails, an on-device AI reading of the phrase
+ * (ai[input] = {group, score}, from ai-worker.js) maps it to a medicine group; such a medicine is
+ * marked inferred, so every finding and question says the exact medicine still needs confirming.
+ */
+export function resolveMedicines(inputs, idx, ai = {}) {
+  const groups = new Map((idx.kb.ai_medicine_groups?.groups || []).map(g => [g.id, g]));
   return inputs.map(s => String(s).trim()).filter(Boolean).map(input => {
+    if (medicineExclusion(input)) return {input, known: false, classes: [], excluded: medicineExclusion(input)};
+    const r = resolveOne(input, idx);
+    if (r.known) return r;
+    const a = ai[input]; const g = a && Number.isFinite(a.score) && a.score >= idx.kb.ai_medicine_groups.threshold && a.group && groups.get(a.group);
+    return g ? {input, known: true, inferred: true, name: g.label, group: g.id, classes: g.classes, aiScore: a.score} : r;
+  });
+}
+function resolveOne(input, idx) {
+  {
     const n = norm(input).replace(/\b\d+(\.\d+)?\s*(mg|mcg|g|units?|iu)\b/g, '').replace(/\b(tablet|tablets|daily|once|twice|er|xr|sr|hcl)\b/g, '').replace(/\s+/g, ' ').trim();
     let m = idx.meds.get(n);
     if (!m) for (const [k, v] of idx.meds) if (k.length > 3 && (n === k || n.startsWith(k + ' ') || n.endsWith(' ' + k) || n.includes(' ' + k + ' '))) { m = v; break; }
@@ -161,7 +177,7 @@ export function resolveMedicines(inputs, idx) {
       for (const [k, v] of idx.meds) { if (k.length < 5) continue; const d = levenshtein(n, k, 2); if (d <= tolerance(k.length) && d < best) { best = d; m = v; corrected = k; } }
     }
     return m ? {input, name: m.name, classes: m.classes, known: true, corrected} : {input, known: false, classes: []};
-  });
+  }
 }
 
 // ------------------------------------------------------------------ analysis
@@ -176,7 +192,7 @@ const LEVEL_ORDER = {discuss: 0, caution: 1, note: 2};
  */
 export function analyze(input, idx) {
   const {kb} = idx;
-  const meds = resolveMedicines(input.medicines || [], idx);
+  const meds = resolveMedicines(input.medicines || [], idx, input.aiMedicines || {});
   const conditions = new Set(input.conditions || []);
   const findings = [], gaps = [], checked = [], unmatched = [], perHerb = new Map();
 
@@ -211,10 +227,10 @@ export function analyze(input, idx) {
           const cls = m.classes.find(c => r.meds.includes(c));
           const item = r.items ? m.classes.map(c => r.items[c]).find(Boolean) : null;
           // "metformin is metformin" says nothing: fall back to a descriptive group the medicine belongs to.
-          let label = kb.class_labels[cls];
-          if (norm(label) === norm(m.name)) label = m.classes.map(c => kb.class_labels[c]).find(l => l && norm(l) !== norm(m.name) && /^an? /.test(l)) || null;
+          let label = m.inferred ? m.name : kb.class_labels[cls];
+          if (!m.inferred && norm(label) === norm(m.name)) label = m.classes.map(c => kb.class_labels[c]).find(l => l && norm(l) !== norm(m.name) && /^an? /.test(l)) || null;
           add(list, {...base, level: r.level, quote: r.quote, items: item ? [item] : [], because: 'medicine', effect: r.effect,
-            medicines: [{input: m.input, name: m.name, label, corrected: m.corrected}]});
+            medicines: [{input: m.input, name: m.name, label, corrected: m.corrected, inferred: !!m.inferred, aiScore: m.aiScore}]});
           matchedMeds.add(m.input); flagged = true;
         }
       }
@@ -277,6 +293,7 @@ export function analyze(input, idx) {
   for (const [herb, products] of perHerb) if (products.size > 1)
     gaps.push({type: 'duplicate', herb, herbName: idx.herbs.get(herb).name, products: [...products].map(p => input.products[p].name)});
   for (const m of meds) if (!m.known) gaps.push({type: 'unknown_medicine', input: m.input});
+  for (const m of meds) if (m.inferred) gaps.push({type: 'inferred_medicine', input: m.input, label: m.name, score: m.aiScore});
 
   findings.sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level] || (a.because === 'always') - (b.because === 'always') || a.herbName.localeCompare(b.herbName));
   for (const f of findings) f.question = askLine(f, kb);
@@ -291,6 +308,7 @@ export function askLine(f, kb, ifSpecies = null) {
   const who = f.medicines.map(m => m.input).join(', ');
   const products = f.products.join(' and ');
   const herb = ifSpecies ? `${f.herbName} (if the label's ingredient is ${ifSpecies})` : f.herbName;
+  if (f.because === 'medicine' && f.medicines[0]?.inferred) return `I take ${who}, which I think is ${f.medicines[0].label}. Which medicine is it exactly, and is it OK with the ${herb} in ${products}?`;
   if (f.because === 'medicine') return `I take ${who}. ${products} contains ${herb}. Should I take them together, and is there anything to watch for?`;
   if (f.because === 'always' && who) return `${products} contains ${herb}, which NIH says interacts with many medicines. Could it affect ${who}?`;
   if (f.because === 'condition') return `${f.conditions.map(c => kb.conditions[c]).join('; ')}: is the ${herb} in ${products} appropriate for me?`;
