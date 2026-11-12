@@ -39,6 +39,9 @@ export function indexKnowledge(kb) {
 // ------------------------------------------------------------------ products
 const AMOUNT = /(\d+(?:[.,]\d+)?)\s*(mcg|µg|ug|mg|g|iu|ml|%)\b/i;
 
+/** OCR fragments and table headers that are not ingredients ("me ——", "Amount = ="). */
+export const isLabelNoise = t => !/\p{L}{3}/u.test(t) || /^amount\b/i.test(t);
+
 /** Parse free label text (typed, pasted or OCR) into ingredient lines. */
 export function parseLabelText(text, name = 'Product') {
   const lines = String(text || '').split(/\r?\n|;|•|·/).map(l => l.replace(/\s+/g, ' ').trim()).filter(l => l.length > 1);
@@ -59,7 +62,7 @@ export function parseLabelText(text, name = 'Product') {
     }
     if (/^(other ingredients|inactive|directions|suggested use|warning|caution|serving size|servings per|amount per|% ?daily|supplement facts|keep out|store)/i.test(line)) { blend = null; if (!/^(other ingredients|inactive)/i.test(line)) continue; ingredients.push({text: line, other: true}); continue; }
     for (const part of line.split(/,(?![^()]*\))/)) {
-      const t = part.trim(); if (t.length < 2) continue;
+      const t = part.trim(); if (isLabelNoise(t)) continue;
       const a = t.match(AMOUNT);
       ingredients.push({text: t, name: t.replace(AMOUNT, '').replace(/\s+/g, ' ').trim() || t, amount: a ? a[0] : null, blend: blend && !a ? blend.name : null, blendTotal: blend && !a ? blend.total : null});
     }

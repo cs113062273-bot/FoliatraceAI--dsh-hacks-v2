@@ -55,7 +55,7 @@ async function search({id,query,method,herbNames,patientLeads}) {
   try {
     const start = performance.now(), index = await loadLibrary();
     const key = JSON.stringify([query,method,herbNames,!!patientLeads]);
-    if (cache.has(key)) { postMessage({...cache.get(key),id,seconds:(performance.now()-start)/1000}); return; }
+    if (cache.has(key)) { postMessage({...cache.get(key),id}); return; }   // keep the original on-device ranking time
     let rows = bm25(query,index,herbNames,patientLeads), baseline = rows.map(r=>r.paper.id);
     if (method === 'ai' && rows.length) {
       await loadModel(id);

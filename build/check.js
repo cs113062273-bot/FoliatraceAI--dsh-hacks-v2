@@ -1,4 +1,4 @@
-import {indexKnowledge, parseLabelText, fromDsldLabel, analyze, resolveMedicines, norm} from './safety-engine.js';
+import {indexKnowledge, parseLabelText, fromDsldLabel, analyze, resolveMedicines, norm, isLabelNoise} from './safety-engine.js';
 import {EXAMPLES} from './safety-examples.js';
 import {researchQueries} from './research-evidence.js';
 
@@ -194,7 +194,7 @@ function briefHTML(r, opts = {meds: true, conditions: true, ingredients: true}, 
   let h = '';
   if (forPrint) {
     // qr is an SVG generated locally from our own base64url link; it contains no user-supplied markup.
-    h += `<header class="print-head">${qr ? `<div class="print-qr">${qr}<span>Scan to open this brief with live NIH links</span></div>` : ''}<h1>Pharmacist brief</h1><p>Prepared ${esc(new Date().toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'}))} with FoliaTrace AI · ${r.counts.discuss} to discuss · ${r.counts.caution} cautions · ${r.gaps.length} label questions · for discussion with a pharmacist or clinician · not medical advice</p></header>`;
+    h += `<header class="print-head">${qr ? `<div class="print-qr">${qr}<span>Scan to open this brief with live NIH links</span></div>` : ''}<h1>Pharmacist brief</h1><p>Prepared ${esc(new Date().toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'}))} with FoliaTrace AI · ${r.counts.discuss} to discuss · ${r.counts.caution} ${r.counts.caution === 1 ? 'caution' : 'cautions'} · ${r.gaps.length} ${r.gaps.length === 1 ? 'label question' : 'label questions'} · for discussion with a pharmacist or clinician · not medical advice</p></header>`;
     if (opts.meds) h += `<p><strong>Medicines I take:</strong> ${r.medicines.length ? r.medicines.map(m => esc(m.input) + (m.inferred ? ` (AI: ${esc(m.name)}, to confirm)` : m.known && m.corrected ? ` (read as ${esc(m.name)})` : '')).join(', ') : 'none entered'}</p>`;
     if (opts.conditions && state.reason) h += `<p><strong>I take the supplements for:</strong> ${esc(state.reason)}</p>`;
     if (opts.conditions && r.conditions.length) h += `<p><strong>About me:</strong> ${r.conditions.map(c => esc(kb.conditions[c])).join('; ')}</p>`;
@@ -355,7 +355,7 @@ async function decodeBrief(token) {
     products: data.p.map(p => ({name: str(p.n, 120) || 'Product', source: ['dsld', 'ocr', 'text'].includes(p.s) ? p.s : 'text', brand: str(p.b, 80), dsldId: Number.isInteger(p.d) ? p.d : undefined,
       url: Number.isInteger(p.d) ? `https://dsld.od.nih.gov/label/${p.d}` : undefined, fictional: !!p.f,
       ingredients: (p.i || []).slice(0, 120).map(r => ({text: str(r[0], 160), name: str(r[1], 160) || undefined, amount: str(r[2], 40) || null, genus: str(r[3], 40) || null, species: str(r[4], 40) || null,
-        blend: str(r[5], 120) || null, blendTotal: str(r[6], 40) || null, category: str(r[7], 40) || undefined}))}))};
+        blend: str(r[5], 120) || null, blendTotal: str(r[6], 40) || null, category: str(r[7], 40) || undefined})).filter(x => !isLabelNoise(x.text))}))};
 }
 function loadQr() { return window.qrcode ? Promise.resolve() : loadScript('vendor/qrcode.js'); }
 async function qrSvg(text) { await loadQr(); const q = window.qrcode(0, 'M'); q.addData(text, 'Byte'); q.make(); return q.createSvgTag({cellSize: 4, margin: 2, scalable: true, alt: 'QR code that opens this brief'}); }
