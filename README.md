@@ -83,8 +83,8 @@ This repository contains the deployable browser product in `build/`. The complet
 Clone this repository and serve its included assets with Python 3.11+:
 
 ```powershell
-git clone https://github.com/cs113062273-bot/foliatrace-research.git
-cd foliatrace-research
+git clone https://github.com/cs113062273-bot/FoliatraceAI--dsh-hacks-v2.git
+cd FoliatraceAI--dsh-hacks-v2
 python -m http.server 8015 --directory build
 ```
 
