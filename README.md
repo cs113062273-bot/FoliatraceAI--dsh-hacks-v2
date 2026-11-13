@@ -2,7 +2,7 @@
 
 FoliaTrace AI helps older adults and caregivers prepare for a conversation with a pharmacist about supplements and medicines. It combines the bottle's ingredients, the person's own description of their medicines and their reason for taking the supplement in a source-linked brief.
 
-**[Open the working product](https://foliatrace-research.civil-bell-5511.chatgpt.site)** · [One-page project description](build/one-page.pdf) · [Full product source](build/source.zip) · [Complete code PDF](build/code.pdf)
+**[Open the working product](https://foliatrace-research.civil-bell-5511.chatgpt.site)** · [One-page project description](build/one-page.pdf) · [Full product source](build/source.zip)
 
 ## The problem and the people using it
 
@@ -76,7 +76,7 @@ This repository contains the deployable browser product in `build/`. The complet
 | `build/inference/` | Pinned sentence-embedding and cross-encoder models, tokenizers and ONNX Runtime |
 | `build/ocr/`, `build/vendor/` | Browser-local label recognition and QR generation |
 | `build/*.json` | NIH knowledge, licensed abstracts, recorded comparisons and report-derived metrics |
-| `build/one-page.pdf`, `build/code.pdf`, `build/source.zip` | Project description, complete code listing and full development source |
+| `build/one-page.pdf`, `build/source.zip` | One-page project description and full development source |
 
 ## Run the browser product locally
 
